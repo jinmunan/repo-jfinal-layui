@@ -1,0 +1,78 @@
+<title>xm-select模板函数</title>
+
+<!-- 功能下拉函数 -->
+#define getFuncSelect(divId,inputName)
+	<div id="#(divId)" style="min-width:100px;#(style)"></div>
+	<script type="text/javascript">
+	$(function(){
+		getFuncOption("#(divId)","#(inputName)","#(value)","#(disabledData)",#(radio??true),#(filterable??true)
+				,"#(layVerify??'required')","#(size??'medium')","#(tips??'---请选择---')",#(disabled??false));
+	});
+</script>
+#setLocal(value="")
+#end
+
+<!-- 部门下拉函数 -->
+#define getOrgSelect(divId,inputName)
+<div id="#(divId)"  style="min-width:100px;#(style)"></div>
+<script type="text/javascript">
+	$(function(){
+		getOrgOption("#(divId)","#(inputName)","#(value)","#(disabledData)",#(radio??true),#(filterable??true)
+				,"#(layVerify??'required')","#(size??'medium')","#(tips??'---请选择部门---')",#(disabled??false));
+	});
+</script>
+#setLocal(value="")
+#end
+
+#define getXmSelectOption()
+<script type="text/javascript">
+//部门下拉树
+function getOrgOption(divId,inputName,selectData,disabledData,radio,filterable,layVerify,size,tips,disabled){
+	var url='#(path)/portal/core/sysOrg/getXmSelectData';
+	getXmSelectOption(divId,inputName,selectData,disabledData,radio,filterable,layVerify,size,tips,disabled,url);
+}
+//功能下拉树
+function getFuncOption(divId,inputName,selectData,disabledData,radio,filterable,layVerify,size,tips,disabled){
+	var url='#(path)/portal/core/sysFunc/getXmSelectData';
+	getXmSelectOption(divId,inputName,selectData,disabledData,radio,filterable,layVerify,size,tips,disabled,url);
+}
+function getXmSelectOption(divId,inputName,selectData,disabledData,radio,filterable,layVerify,size,tips,disabled,url){
+	var xmSelectRender = xmSelect.render({
+		el: '#'+divId, 
+		model: { label: { type: 'text' } },
+		radio: radio,
+		clickClose: radio,		
+		name:inputName,				//表单提交名称
+		tree: {
+			show: true,
+			strict: false, 
+			expandedKeys: ['sys','frame'],//默认展开节点
+		},
+		height: 'auto',
+		disabled:disabled,			//禁用属性：true/false
+		tips:tips,					//默认提示, 类似于placeholder
+		filterable:filterable,		//搜索开关：true/false
+		layVerify:layVerify,		//表单验证, 同layui的lay-verify
+		size:size 					//控件大小：large / medium / small / mini
+	})
+	
+	$.ajax({
+		url:url,
+		type:"POST",
+		data:{
+			"selectData":selectData,
+			"disabledData":disabledData
+		},
+		success:function(ret){
+			if(ret.state=='ok'){
+				var data=ret.data;
+				xmSelectRender.update({
+					data: data,
+					autoRow: true,
+				})
+			}
+		}
+	})
+}
+</script>
+#end

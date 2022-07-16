@@ -1,0 +1,275 @@
+#@layoutT("部门管理")
+#define css()
+<style type="text/css">
+#removeUser{
+	color:#fff;
+}
+</style>
+#end
+#define main()
+  <div id='container' class="layui-row" >	
+	<div class="layui-col-xs12 layui-col-sm3 layui-col-md2 div-scroll" position="left" id="accordion1"> 
+         <div title="部门列表" class="l-scroll"style="left: 0px;  top: 0px;">
+             <ul id="leftLayout" style="margin-top:0px;margin-bottom:10px;">
+             </ul>
+         </div>
+     </div>
+        
+	<div class="layui-col-xs12 layui-col-sm9 layui-col-md10" position='center' id="orgDetail" >
+		<div id="orgUser">
+			#@formStart()
+				#@queryStart('用户名')
+				   <input type="search" name="userCode" autocomplete="off" class="layui-input" placeholder="用户名"/>
+				#@queryEnd()
+				#@queryStart('姓名')
+			   		<input type="search" name="userName" autocomplete="off" class="layui-input" placeholder="姓名"/>
+				#@queryEnd()
+			#@formEnd()
+		    <div class="layui-row  f-index-toolbar">
+		    	<!-- 用户列表 -->
+				<div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
+	   				<table id="maingrid" lay-filter="maingrid"></table>
+	   			</div>
+	   			<!-- 已选用户 -->
+	    		<div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
+		             <table id="maingrid2" lay-filter="maingrid2"></table>   
+	    		</div>
+			</div>
+    	</div>
+  	</div>
+  	
+</div>
+
+<div class="layui-row layui-col-space1 task-row">
+	<div class="layui-hide-xs layui-col-sm3 layui-col-md4">
+		<div class="layui-input-block"></div>	
+	</div>
+	<div class="layui-col-xs12 layui-col-sm9 layui-col-md8">
+		<div class="layui-input-block">
+			<div class="layui-btn-container" style="margin-top: 10px;margin-left:-25px">
+				<button type="button" class='layui-btn  layui-btn-normal ' onclick="getSelectUserData()"  value="Submit">
+					<i class="layui-icon">&#xe605;</i>	确定
+				</button>
+				<button id='closeWinBtn' type="button" 	 class='layui-btn  layui-btn-normal' value="Close">
+					<i class="layui-icon">&#x1006;</i>	取消
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+#end
+
+
+
+#define js()
+<script type="text/javascript">
+
+var leftOtions,orgName,orgCode="",index;
+
+function setHeight(){
+	var contentHeight=$(window).height()-70;
+	var width =$('#container').width();
+	var col3=$('#accordion1').width();
+	$("#accordion1").css("height",contentHeight);
+	$("#orgDetail").css("height",contentHeight);
+}
+$(function(){
+	queryOrgTree();
+	setHeight();
+	$(window).resize(function(){
+		setHeight();
+	});
+	 queryOrgUser();
+})
+
+//查询所有部门菜单并生成树
+function queryOrgTree(){
+	leftNodes="";
+	$.ajax({
+		url:"#(path)/portal/core/sysOrg/tree",  
+	    type:"POST", 
+	    data: {
+	    },
+	    success:function(data){
+	    	if(data.length>0){
+	    		var treeNode=data[0];
+	    		showLeftTree(treeNode,0);
+	    		leftTree();
+	    	}
+	    }	
+	});
+}
+
+//构造部门树节点
+var spred=true;//是否展开节点
+function showLeftTree(treeNode,num){
+  	var id=treeNode.id;
+	var text=treeNode.text;
+	if(num!=0){
+		leftNodes+=",";
+	}
+	//展开两层
+	if(num>=2){
+		spred=false;
+	}
+	
+		
+	leftNodes+="{title:'"+text+"',spread:"+spred+",id:'"+id+"',children:[";
+	var children=treeNode.children;
+	if(children.length>0){
+		for(var i=0;i<children.length;i++){
+			showLeftTree(children[i],i);
+		}
+	}
+	leftNodes+="]}";
+}
+
+    
+function strToJson(str){
+    var json = (new Function("return " + str ))();
+    return json;
+  }
+
+
+//部门树
+function leftTree(){
+	layui.use('tree',function(){
+		var node=[strToJson(leftNodes.replace("undefined",""))];
+		leftOtions={
+				elem: '#leftLayout' //传入元素选择器
+				,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩		
+				,click: function(item){ //点击节点回调
+				      treeClick(item);
+				 }
+				,data: node
+				
+		}	
+		$('ul li').remove();
+		layui.tree.render(leftOtions);
+	});
+}
+function treeClick(item){
+	orgName=item.data.title;
+    orgCode=item.data.id;
+	var cite=document.getElementsByTagName('span');
+	var event=window.event||arguments.callee.caller.arguments[0];//消除浏览器差异
+    for(var i=0;i<cite.length;i++){
+    	if(cite[i]==event.srcElement){
+    		cite[i].classList.add("cite")
+      	}else{
+    	    cite[i].classList.remove("cite")  
+      	}
+    } 
+    queryOrgUser();	
+}
+
+//部门用户列表
+const selectUserData=#(selectUserList);
+getSelectUserTable(selectUserData);
+var html='',dataType='#(dataType??1)';
+function queryOrgUser(){
+	gridArgs.gridDivId ='maingrid';
+	initGrid({id : 'maingrid'
+			,elem : '#maingrid'
+			,cellMinWidth: 80
+			,height:'full-120'
+			,cols : [ [
+					#if(dataType=='1')//多选
+					{title: '主键',field : 'id',width : 35,checkbox : true},
+					#end
+					{title:'序号',type:'numbers',width:35},						
+					{title: '用户名', field: 'user_code' },
+        			{title: '姓名', field: 'user_name'},
+			] ]
+			,limits:[5,10,20,30]
+			,url:"#(path)/portal/core/sysUser/list?orgId="+orgCode
+			,searchForm : 'searchForm'
+		});
+}
+
+//已选用户列表
+function getSelectUserTable(tableData){
+	gridArgs.gridDivId ='maingrid2';
+	initGrid({id : 'maingrid2'
+			,elem : '#maingrid2'
+			,cellMinWidth: 80
+			,height:'full-120'
+			,cols : [ [
+					{title: '主键',field : 'id',width : 35,checkbox : true},
+        			{title: '已选用户&nbsp;&nbsp;&nbsp;<button onclick="removeSelectUserData()" class="layui-btn layui-btn-primary layui-btn-xs" id="removeUser"><i class="layui-icon layui-icon-delete"></i>移除</button>', field: 'user_name'}
+	        		
+			] ]
+			,page: false
+			,data:tableData
+		});
+}
+
+//监听行单击事件（双击事件为：rowDouble）
+const hash = #(hash);
+layui.table.on('row(maingrid)', function(obj){
+	var data=obj.data;
+    if(!hash[data.id]){
+        if(dataType=='0'&&selectUserData.length>0){
+            layer.msg("此项只能选择一个用户,请移除已选用户再选择")
+			return
+        }
+		selectUserData.push(data);
+		hash[data.id]=true;
+	  	getSelectUserTable(selectUserData)
+    }
+});
+
+layui.table.on('checkbox(maingrid)',function(obj){
+	console.log(obj.checked); //当前是否选中状态
+	console.log(obj.data); //选中行的相关数据
+	console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+	var data=layui.table.checkStatus('maingrid').data;
+	$.each(data,function(i,obj){
+		if(!hash[obj.id]){
+			selectUserData.push(obj);
+			hash[obj.id]=true;
+	    }
+	});
+	getSelectUserTable(selectUserData);
+	
+});
+
+//获取最终选择的用户数据
+function getSelectUserData(){
+	closeParentWin();
+	return parent.getUserData(selectUserData,dataType);
+}
+
+//移除选择的用户数据
+function removeSelectUserData(){
+	//已选用户列表选中的数据
+	var data=getCheckData('maingrid2');
+	var removeIndex=new Array();
+	//标记要移除的数据
+	for(var i=0;i<selectUserData.length;i++){
+		var user=selectUserData[i];
+		$.each(data,function(j,obj){
+			if(user.id==obj.id){
+				selectUserData.splice(i,1);//splice移除元素之后会返回新的对象，长度-1
+				hash[user.id]=false;
+				//数组长度-1，下标-1
+				i=i-1;
+			}
+		});
+	}
+
+	//重新渲染已选用户列表 
+	getSelectUserTable(selectUserData);
+}
+
+//获取表格选中的数据
+function getCheckData(tableId){
+    var checkStatus = layui.table.checkStatus(tableId)
+    ,data = checkStatus.data;
+    return data;
+  }
+　
+</script>
+
+#end

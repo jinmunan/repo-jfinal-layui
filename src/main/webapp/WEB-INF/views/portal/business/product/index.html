@@ -1,0 +1,57 @@
+#@layoutT('产品')
+#define main()
+<div class="container-wrap">
+   #@formStart()
+      #@queryStart('关键词查询')
+   <input type="search" name="keyword" autocomplete="off" class="layui-input" placeholder="搜索关键词" style="padding-left:20px"/>
+   <i class="layui-icon layui-icon-search" style="position: absolute;top:7px;left:2px"></i>
+      #@queryEnd()
+   #@formEnd()
+
+   #@table()
+</div>
+#end
+
+#define js()
+<!-- 分页表格 -->
+<script>
+    gridArgs.title='产品';
+    gridArgs.dataId='id';
+    gridArgs.deleteUrl='#(path)/portal/business/product/delete';
+    gridArgs.updateUrl='#(path)/portal/business/product/edit/';
+    gridArgs.addUrl='#(path)/portal/business/product/add';
+    gridArgs.gridDivId ='maingrid';
+    initGrid({id : 'maingrid'
+        ,elem : '#maingrid'
+        ,toolbar:'#table_toolbar'//开启头部工具栏，并为其绑定左侧模板
+        ,cellMinWidth: 100
+        ,cols : [ [
+				 {title: '主键',field : 'id',width : 35,checkbox : true},
+				 {title:'序号',type:'numbers',width:35},
+				 {title:'达人id',field:'talentId'},
+				 {title:'标题',field:'title'},
+				 {title:'封面图',field:'cover_img'},
+				 {title:'价格',field:'price'},
+				 {title:'类型（1、签名设计、2、头像设计）',field:'type'},
+				 {title:'banner轮播图',field:'banner_img'},
+				 {title:'产品详情图',field:'detail_img'},
+				 {title:'创建时间',field:'create_time'},
+				 {title:'创建人',field:'create_by'},
+				 {title:'排序',field:'order_no'},
+				 {title:'置顶',field:'top'},
+				 {title:'开启加急（0：否，1：是）',field:'is_urgent'},
+				 {title:'加急价格',field:'add_price'},
+				 {title:'来源',field:'source'},
+				 {title:'点击数',field:'click_num'},
+				 {title:'订单数',field:'pay_num'},
+
+            {fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'}
+            ] ]
+        ,url:"#(path)/portal/business/product/list"
+        ,searchForm : 'searchForm'
+    });
+
+</script>
+#end
+
+

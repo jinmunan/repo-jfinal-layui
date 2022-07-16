@@ -1,0 +1,36 @@
+	<input type="hidden" class="layui-input"  name="talent.id" value="#(talent.id??)" />
+#(token)
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("达人名称",6)
+	<input type="text" class="layui-input"  name="talent.name" value="#(talent.name??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("头像",6)
+	<input type="text" class="layui-input"  name="talent.headImg" value="#(talent.head_img??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("背景图",6)
+	<input type="text" class="layui-input"  name="talent.backgroundImg" value="#(talent.background_img??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("简介",6)
+	<input type="text" class="layui-input"  name="talent.introduce" value="#(talent.introduce??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("账号编码",6)
+	<input type="text" class="layui-input"  name="talent.userCode" value="#(talent.user_code??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("创建时间",6)
+	<input type="text" class="layui-input"  name="talent.createTime" value="#(talent.create_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("创建人",6)
+	<input type="text" class="layui-input"  name="talent.createBy" value="#(talent.create_by??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("来源",6)
+	<input type="text" class="layui-input"  name="talent.source" value="#(talent.source??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+
+	#@submitButton()

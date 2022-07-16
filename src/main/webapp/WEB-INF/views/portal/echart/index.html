@@ -1,0 +1,66 @@
+    <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Echart 图标样例 </title>
+#@header()
+<script src="#(path)/static/libs/echarts/echarts.min.js"></script>
+<script src="#(path)/static/libs/echarts/ecstat/ecStat.min.js"></script><!-- 工具条js -->
+<script src="#(path)/static/libs/echarts/echarts.tool.js"></script>
+<style type="text/css">
+		.chart{
+	 		width:50%;height:250px;margin-top:30px;float: left;display: none;
+		}	
+	</style>
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="bar" class="layui-col-xs12 layui-col-sm6 layui-col-md6" style="height:400px;float: left"></div>
+    <div id="line" class="layui-col-xs12 layui-col-sm6 layui-col-md6" style="height:400px;float: left"></div>
+    <div id="pie" class="layui-col-xs12 layui-col-sm6 layui-col-md6" style="height:400px;float: left"></div>
+    <div id="chart" class="layui-col-xs12 layui-col-sm6 layui-col-md6"  style="height:400px;float: left"></div>
+    <div id="chart0" class="chart"></div>
+	<div id="chart1" class="chart"></div>
+	<div id="chart2" class="chart"></div>
+	<div id="chart3" class="chart"></div>
+    <script type="text/javascript">
+    var _path="#(path)";
+    //柱状图
+    //变量配置
+    var config=echart.config;
+    console.log(config)
+    config.title="ECharts 入门示例";
+    config.title_x="center";
+    config.subtitle="测试";
+    config.legend=['销量'];
+    config.legend_x="left";
+    //config.xName="类型";
+    config.xAxis=["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"];
+    //config.yName="数量";
+    config.seriesName="销量";
+    config.seriesData=[5, 20, 36, 10, 10, 20];
+    config.divId="bar";
+    echart.bar(config);
+    
+    //折线图
+    config.legend=['库存'];
+    config.seriesName="库存";
+    config.seriesData=[10,30,50,60,70,100];
+    config.divId="line";
+    echart.line(config);
+    
+    //饼图
+    config.legend=["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"];
+    config.Name='库存';
+    config.seriesPieData=[{value:10,name:'衬衫'},{value:10,name:'羊毛衫'},{value:10,name:'雪纺衫'},
+    	{value:10,name:'裤子'},{value:10,name:'高跟鞋'},{value:10,name:'袜子'}];
+    config.divId="pie";
+    config.tooltipText="件";
+    echart.pie(config);
+    
+
+    //部门人数 统计
+    echart.getData("#(path)/portal/echart/queryData",null);
+    </script>
+</body>
+</html>

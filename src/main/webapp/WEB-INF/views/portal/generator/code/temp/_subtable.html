@@ -1,0 +1,31 @@
+<script>
+#for(x:subTableList)
+//从表#(for.count)
+function renderSubTable#(for.count)(refId){
+		var editTable=new EditTable();
+		var config=editTable.config;
+		//除了第一个用默认配置,其他表格都要配置自己的参数
+		config.tableId='tab_item_#(for.count)';//表Id
+		config.addBtnId='add_btn_#(for.count)';//添加按钮ID
+		config.delEvent='del_btn_#(for.count)';//删除按钮Even值
+		config.toolbar='table_toolbar_#(for.count)';//表头工具ID
+		config.rowbar='table_rowbar_#(for.count)';//行按钮ID
+		config.saveBtnId="save_btn_#(for.count)";//保存表格接口
+		config.queryUrl='#("#")(path)#(x.actionKey)/list';//查询接口
+		config.params={"refId":refId};//查询参数
+		config.saveUrl='#("#")(path)#(x.actionKey)/saveTableData?type=formTable&refId='+refId;//保存接口
+		config.deleteUrl='#("#")(path)#(x.actionKey)/delete';//删除接口
+		config.rowData=#(x.rowData);
+		editTable.render(config,{
+			 elem: '#("#")'+config.tableId
+		     ,height: '300'
+		     ,toolbar:'#("#")'+config.toolbar
+		     ,cols: [[ 
+#(x.tableCols)
+					,{fixed: 'right', title:'操作', toolbar: '#("#")'+config.rowbar,width:100 }
+				]]
+		});
+	}
+	
+#end
+</script>

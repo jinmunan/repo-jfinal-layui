@@ -1,0 +1,51 @@
+package #(servicePackage);
+
+import java.util.Map;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Record;
+import #(importModel);
+import com.cj.common.base.service.BaseService;
+import com.cj.common.util.kit.IdKit;
+import com.cj.common.vo.Grid;
+
+/**
+  *
+ * #(tableComment)
+ * @author #(author)
+ * @date #(date)
+ */
+public class #(modelName)Service extends BaseService {
+	private #(modelName) dao = new #(modelName)().dao();
+
+    @Override
+  	public Model<#(modelName)> getDao(){
+    	return dao;
+   	}
+
+   	public Grid page(int pageNumber, int pageSize,Record record) {
+      	Record rd = new Record();
+      	rd.set("#(refColumn)=", record.getStr("refId"));
+      	return queryForList(pageNumber, pageSize,rd);
+   	}
+   	
+   	public boolean saveTableList(JSONArray #(lowercaseModelName)List,String refId){
+   		for(int i=0;i<#(lowercaseModelName)List.size();i++){
+			Map<String, Object> columns=(JSONObject) #(lowercaseModelName)List.get(i);
+			Record record =new Record();
+			record.setColumns(columns);
+			record.set("#(refColumn)", refId);
+			record.remove("LAY_TABLE_INDEX","LAY_CHECKED");
+			if(isExists(getPK(),columns.get(getPK())+"")){
+				Db.update(getTable(), record);
+			}else{
+				record.set(getPK(), IdKit.createUUID());
+				Db.save(getTable(), record);				
+			}
+		}
+   		return true;
+   	}
+}

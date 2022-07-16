@@ -1,0 +1,274 @@
+
+#@layoutT("主页")
+#define css()
+ <link rel="stylesheet" href="#(path)/static/css/home.css?t=#now()" media="all">
+#end
+#define main()
+  <div class="layui-row layui-col-space15">   
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          访问量
+          <span class="layui-badge layui-bg-blue admin-badge">周</span>
+        </div>
+        <div class="layui-card-body admin-card-list">
+          <p class="admin-big-font">38,574</p>
+          <p>
+            总计访问量 
+            <span class="admin-span-color">188万 <i class="layui-icon">&#xe66c;</i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          下载
+          <span class="layui-badge layui-bg-cyan admin-badge">月</span>
+        </div>
+        <div class="layui-card-body admin-card-list">
+          <p class="admin-big-font">12,593</p>
+          <p>
+            新下载 
+            <span class="admin-span-color">12% <i class="layui-icon">&#xe650;</i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          收入
+          <span class="layui-badge layui-bg-green admin-badge">年</span>
+        </div>
+        <div class="layui-card-body admin-card-list">
+
+          <p class="admin-big-font">902,665</p>
+          <p>
+            总收入 
+            <span class="admin-span-color">*** <i class="layui-icon">&#xe659;</i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          活跃用户
+          <span class="layui-badge layui-bg-red admin-badge">月</span>
+        </div>
+        <div class="layui-card-body admin-card-list">
+
+          <p class="admin-big-font">12,456</p>
+          <p>
+            最近一个月 
+            <span class="admin-span-color">15% <i class="layui-icon">&#xe770;</i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-col-sm12">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          部门人数统计
+          <div class="layui-btn-group admin-btn-group">
+            <button class="layui-btn layui-btn-xs">去年</button>
+            <button class="layui-btn layui-btn-xs">今年</button>
+          </div>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-row">
+            <div class="layui-col-sm8">
+                <div class="layui-carousel admin-dataview"  id="chart">                
+                </div>
+            </div>
+            <div class="layui-col-sm4">
+              <div class="admin-card-list">
+                <p class="admin-normal-font">月访问数</p>
+                <span>同上期增长</span>
+                <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                  <div class="layui-progress-bar" lay-percent="30%"></div>
+                </div>
+              </div>
+              <div class="admin-card-list">
+                <p class="admin-normal-font">月下载数</p>
+                <span>同上期增长</span>
+                <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                  <div class="layui-progress-bar" lay-percent="20%"></div>
+                </div>
+              </div>
+              <div class="admin-card-list">
+                <p class="admin-normal-font">月收入</p>
+                <span>同上期增长</span>
+                <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                  <div class="layui-progress-bar" lay-percent="25%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm4">
+      <div class="layui-card">
+        <div class="layui-card-header">文章分享</div>
+        <div class="layui-card-body">
+          <ul class="admin-card-status">
+            <li>
+              <h3>JFinal-layui-pro v2.0专业版发布，优化系统界面</h3>
+              <p>pro专业版和master开原版本的区别主要是前端界面的不同，在原有的基础上修改css，调整首页布局，优化部分功能，打造一款美观、好用、专业的后台管理系统</p>
+              <span>琴海森林 发布于 4月前</span>
+              <a href="https://www.qinhaisenlin.com/share/54" target="_blank" class="layui-btn layui-btn-xs">详情</a>
+            </li>            
+            <li>
+              <h3>JFinal-layui v1.4.2 强势来袭，XSS、CSRF防御、代码器</h3>
+              <p> JFinal-layui v1.4.2 新增XSS、CSRF防御和代码生成器，加强web安全和提升开发效率！</p>
+              <span>琴海森林 发布于 1年前</span>
+              <a href="https://www.qinhaisenlin.com/share/51" target="_blank" class="layui-btn layui-btn-xs">详情</a>
+            </li>            
+            <li>
+              <h3>form表单上传按钮</h3>
+              <p> 在表单中上传附件一直都是常用的业务功能，所以特意定制了这样一个上传按钮，这样在表单中使用附件上传功能就非常简单了。</p>
+              <span>琴海森林 发布于 1年前</span>
+              <a href="https://www.qinhaisenlin.com/doc/2-8" target="_blank" class="layui-btn layui-btn-xs">详情</a>
+            </li>            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm8">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6">
+          <div class="layui-card">
+            <div class="layui-card-header">用户列表</div>
+            <div class="layui-card-body">
+              <table class="layui-table" lay-skin="line">
+                <thead>
+                  <tr>
+                    <th>用户名</th>
+                    <th>最后登录时间</th>
+                    <th>状态</th>
+                    <th>获得赞</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="first">竹之青</span></td>
+                    <td><i class="layui-icon layui-icon-log"> 11:20</i></td>
+                    <td><span>在线</span></td>
+                    <td>22 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td><span class="second">安德烈</span></td>
+                    <td><i class="layui-icon layui-icon-log"> 10:40</i></td>
+                    <td><span>在线</span></td>
+                    <td>21 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td><span class="third">高尔夫</span></td>
+                    <td><i class="layui-icon layui-icon-log"> 01:30</i></td>
+                    <td><i>离线</i></td>
+                    <td>66 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td>莫言</td>
+                    <td><i class="layui-icon layui-icon-log"> 21:18</i></td>
+                    <td><i>离线</i></td>
+                    <td>45 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td>猕猴桃</td>
+                    <td><i class="layui-icon layui-icon-log"> 09:30</i></td>
+                    <td><span>在线</span></td>
+                    <td>21 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td>托尔斯泰</td>
+                    <td><i class="layui-icon layui-icon-log"> 21:18</i></td>
+                    <td><i>在线</i></td>
+                    <td>45 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td>琴海森林</td>
+                    <td><i class="layui-icon layui-icon-log"> 09:30</i></td>
+                    <td><span>在线</span></td>
+                    <td>21 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                  <tr>
+                    <td>一木森</td>
+                    <td><i class="layui-icon layui-icon-log"> 09:30</i></td>
+                    <td><span>在线</span></td>
+                    <td>21 <i class="layui-icon layui-icon-praise"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-sm6">
+          <div class="layui-card">
+            <div class="layui-card-header">系统日志</div>
+            <div class="layui-card-body">
+              <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                  <table id="maingrid" lay-filter="maingrid"></table>
+                  	<!-- 	每行的操作按钮 -->
+					<script type="text/html" id="bar_maingrid">
+  						<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+					</script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+   	
+   	
+#end
+
+#define js()
+<script src="#(path)/static/libs/echarts/echarts.min.js"></script>
+<script src="#(path)/static/libs/echarts/ecstat/ecStat.min.js"></script>
+<script src="#(path)/static/libs/echarts/echarts.tool.js"></script>
+<script type="text/javascript">    
+  	//部门人数统计
+  	//echart.getData(url,params,divId),其中params为map对象，是url接口查询所需参数，没有则为null,divid默认为chart,可指定值
+	echart.getData("#(path)/portal/echart/queryData",null,'chart');
+	
+	var userCode="#(vs.code)";
+	gridArgs.title='系统日志';
+	gridArgs.dataId='id';
+	gridArgs.detailUrl='#(path)/portal/core/sysLog/detail/';
+	gridArgs.deleteUrl='#(path)/portal/core/sysLog/delete';
+	gridArgs.gridDivId ='maingrid';
+	gridArgs.pageSize=7;
+	gridArgs.limits=[7,20,30,40,50];
+	initGrid({id : 'maingrid'
+			,elem : '#maingrid'
+			,cellMinWidth: 80
+			,height:360
+			,cols : [ [
+					//{title: '主键',field : 'id',width : 35,checkbox : true},						
+					{title: '序号',type:'numbers',width:35},
+        			{title: '操作用户', field: 'user_code'},
+	        		{title: '操作时间', field: 'create_time',templet:''},
+	        		{title: '资源类型', field: 'method_name'},
+					//{title: '资源路径', field: 'url' },
+        			//{title: '资源数据', field: 'data'},
+        			{title: 'ip地址', field: 'ip'},																	
+        			{title: '日志类型', field: 'remark'},																	
+					{title: '操作 ',fixed:'right',align : 'left',toolbar : '#bar_maingrid'} // 这里的toolbar值是模板元素的选择器
+			] ]
+			,url:"#(path)/portal/core/sysLog/list"
+			//,searchForm : 'searchForm'
+		});
+	
+</script>
+
+#end
+
+

@@ -1,0 +1,76 @@
+	<input type="hidden" class="layui-input"  name="order.id" value="#(order.id??)" />
+#(token)
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("用户标识",6)
+	<input type="text" class="layui-input"  name="order.openid" value="#(order.openid??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("产品id",6)
+	<input type="text" class="layui-input"  name="order.productId" value="#(order.productId??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("手机",6)
+	<input type="text" class="layui-input"  name="order.phone" value="#(order.phone??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("价格",6)
+	<input type="text" class="layui-input"  name="order.price" value="#(order.price??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("创建时间",6)
+	<input type="text" class="layui-input"  name="order.createTime" value="#(order.create_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("用户姓名",6)
+	<input type="text" class="layui-input"  name="order.userName" value="#(order.user_name??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("用户留言",6)
+	<input type="text" class="layui-input"  name="order.userRemark" value="#(order.user_remark??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("完成时间",6)
+	<input type="text" class="layui-input"  name="order.updateTime" value="#(order.update_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("修改者",6)
+	<input type="text" class="layui-input"  name="order.updateBy" value="#(order.update_by??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("加急（0：否，1：是）",6)
+	<input type="text" class="layui-input"  name="order.urgent" value="#(order.urgent??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("加急价格",6)
+	<input type="text" class="layui-input"  name="order.addPrice" value="#(order.add_price??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("是否完成（0：否，1：是）",6)
+	<input type="text" class="layui-input"  name="order.isEnd" value="#(order.is_end??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("来源（抖音、快手）",6)
+	<input type="text" class="layui-input"  name="order.source" value="#(order.source??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("订单编号",6)
+	<input type="text" class="layui-input"  name="order.orderCode" value="#(order.order_code??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("交易号",6)
+	<input type="text" class="layui-input"  name="order.transactionId" value="#(order.transaction_id??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("支付方式（1、支付宝，2、微信）",6)
+	<input type="text" class="layui-input"  name="order.payMethod" value="#(order.pay_method??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("订单类型（1：签名设计，2、头像设计）",6)
+	<input type="text" class="layui-input"  name="order.orderType" value="#(order.order_type??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("支付状态（0：未支付，1：已支付，2：退款中，3：已退款）",6)
+	<input type="text" class="layui-input"  name="order.paySuccess" value="#(order.pay_success??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+
+	#@submitButton()

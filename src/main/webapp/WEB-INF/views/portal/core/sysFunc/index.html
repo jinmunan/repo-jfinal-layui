@@ -1,0 +1,332 @@
+#@layoutT("功能")
+#define css()
+<style type="text/css"> 
+
+/** 树图标样式 */
+body .layui-tree-skin-skin .layui-tree-branch{
+	color: #00C5CD;
+}
+/** 隐藏树图标 */
+.layui-tree-branch/*, .layui-tree-leaf ,.layui-xtree-icon-null  */{
+    display: none;
+}  
+#maingrid {
+	border: none;
+}
+
+.l-accordion-header{
+	display:none;
+}
+.div-scroll{
+	overflow:auto;
+	border:1px solid #DCDCDC;
+	height: 595px;
+	position: relative;
+}
+.cite{
+   color:#5FB878;
+}
+#container{
+  background: #ffffff;
+}
+#tablelist{
+  border-bottom: 1px solid #DCDCDC;
+    border-right: 1px solid #DCDCDC;
+    height: 582px;
+    border-top: 1px solid #DCDCDC;
+}
+.search-model {
+    margin-bottom: 0px;
+    border-radius:0px;
+}
+</style>
+#end
+#define main()
+<div id='container' class="layui-row">	
+	<div class="layui-col-xs12 layui-col-sm4 layui-col-md3 div-scroll" position="left" id="accordion1"> 
+	     <div class="l-layout-header" onclick="reloadFunc()" title="点击刷新数据">功能菜单</div>
+         <div title="功能列表" class="l-scroll"style="left: 0px;  top: 0px;">
+             <ul id="leftLayout" style="margin-top:0px;margin-bottom:10px;">
+             </ul>
+         </div>
+     </div>
+        
+	<div class="layui-col-xs12 layui-col-sm8 layui-col-md9" position='center'  id="tablelist" >
+		<form class="layui-form layui-form-pane f-form" id='searchForm' lay-filter='searchForm' action="javascript:void(0);">
+		<div class='layui-row table-button'>
+					<div class='layui-col-xs12'>
+						<div class="layui-btn-group">
+						    #if(vs.funcMap.get('sys_func_add'))
+							<button   id='addBtn_' type="button" class="layui-btn layui-btn-mini layui-btn-normal layui-btn-sm">
+								<i class="layui-icon">&#xe608;</i> 添加
+							</button>
+							#end
+							#if(vs.funcMap.get('sys_func_delete'))
+							<button   id='deleteBtn_' type="button" class="layui-btn layui-btn-mini layui-btn-normal layui-btn-sm">
+								<i class="layui-icon">&#xe640;</i> 删除
+							</button>
+							#end
+					</div>
+				</div>
+			</div>
+		</form>
+      	<table id="maingrid" lay-filter="maingrid"></table>
+    </div>
+	
+ </div>
+#end
+#define js()
+<script type="text/html" id="bar_maingrid">
+	#if(vs.funcMap.get('sys_func_update'))
+  	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	#end
+	#if(vs.funcMap.get('sys_func_delete'))
+  	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	#end
+</script>
+<script type="text/html" id="switchTpl">
+  	<input type="checkbox" name="isStop" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="isStopFilter" {{ d.is_stop == 0 ? 'checked' : '' }}>
+</script> 
+<script type="text/html" id="switchTpl_spread">
+  	<input type="checkbox" name="spread" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="isSpreadFilter" {{ d.spread ==0  ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="switchTpl_is_window_open">
+  	<input type="checkbox" name="isWindowOpen" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="isWindowOpenFilter" {{ d.is_window_open ==1  ? 'checked' : '' }}>
+</script>  
+<script type="text/html" id="icon">
+	<i class="layui-icon {{d.icon}}"></i>
+</script>
+<script type="text/html" id="numToStr">
+	{{d.func_type==0?'菜单':'按钮'}}
+</script>
+
+<script type="text/javascript">
+
+var leftOtions,leftNodes,funcName,funcCode="frame";
+var projectName="#(peojectName)";
+
+function setHeight(){
+	var contentHeight=$(window).height()-10;
+	$("#accordion1").css("height",contentHeight);
+	$("#tablelist").css("height",contentHeight);
+}
+
+$(function(){
+	queryFuncTree();
+	getFuncList();
+	setHeight();
+	$(window).resize(function(){
+		setHeight();
+	});
+})
+
+function getFuncList(){
+	gridArgs.title='功能';
+	gridArgs.dataId='id';
+	gridArgs.deleteUrl='#(path)/portal/core/sysFunc/delete';
+	gridArgs.updateUrl='#(path)/portal/core/sysFunc/edit/';
+	gridArgs.addUrl='#(path)/portal/core/sysFunc/add?parentId='+funcCode;
+	gridArgs.gridDivId ='maingrid';
+	gridArgs.heightDiff=78;
+	initGrid({id : 'maingrid',
+			elem : '#maingrid',
+			cols : [ [
+				{title : '主键',field : 'id',width : 35,checkbox : true},
+				{title:'序号',type:'numbers',width:35},
+	   			//{title: '上级功能', field: 'parent_name'},
+	   			{title: '功能名称', field: 'func_name',edit:'text'},
+	   			{title: '连接地址', field: 'link_page',edit:'text'},       			
+	   			{title: '是否启用', field: 'is_stop',templet:'#switchTpl' },
+	   			{title: '功能类型', field: 'func_type',templet:'#numToStr'},
+	   			{title: '是否展开', field: 'spread',templet:'#switchTpl_spread' },
+	   			{title: 'window打开', field: 'spread',templet:'#switchTpl_is_window_open'},
+	   			{title: '排序', field: 'order_no',edit:'text'},
+	   			{title: '图标', field: 'icon',templet:'#icon'},
+				{title: '操作',fixed:'right',width : 120,align : 'left',toolbar : '#bar_maingrid'} // 这里的toolbar值是模板元素的选择器
+			] ],
+			url:"#(path)/portal/core/sysFunc/list?id="+funcCode,
+			searchForm : 'searchForm'
+		});
+}
+
+//查询所有功能菜单并生成树
+function queryFuncTree(){
+	leftNodes="";
+	$.ajax({
+		url:"#(path)/portal/core/sysFunc/tree",  
+	    type:"POST", 
+	    data: {
+	    },
+	    success:function(data){
+	    	if(data.length>0){
+	    		var treeNode=data[0];
+	    		showLeftTree(treeNode,0,true);
+	    		leftTree();
+	    	}
+	    }	
+	});
+}
+
+var nodeNum=0;
+/**
+ * spread：true-展开，false-不展开
+ */
+function showLeftTree(treeNode,num,spread){
+  	var id=treeNode.id;
+	var text=treeNode.text;
+	if(num!=0){
+		leftNodes+=",";
+	}
+	nodeNum++;
+	if(nodeNum>2){
+		spread=false;
+	}
+	leftNodes+="{title:'"+text+"',spread:"+spread+",id:'"+id+"',children:[";
+	var children=treeNode.children;
+	if(children.length>0){
+		for(var i=0;i<children.length;i++){			
+			showLeftTree(children[i],i,spread);
+		}
+	}
+	leftNodes+="]}";
+}
+
+    
+function strToJson(str){
+    var json = (new Function("return " + str ))();
+    return json;
+  }
+
+function reloadFunc(){
+	nodeNum=0;
+	queryFuncTree();
+}
+
+//功能树
+function leftTree(){
+	layui.use('tree',function(){
+		var node=[strToJson(leftNodes.replace("undefined",""))];
+		leftOtions={
+				elem: '#leftLayout' //传入元素选择器	
+				,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+				,click: function(item){ //点击节点回调
+				      treeClick(item);
+				      $("#addBtn_").off("click");//去掉添加按钮重复绑定事件	      			     
+				      getFuncList();	
+				 }			
+				,data: node				
+		}	
+		$('ul li').remove();
+		layui.tree.render(leftOtions);
+	});
+}
+function treeClick(item){
+	functionName=item.data.title;
+    funcCode=item.data.id;
+	var cite=document.getElementsByTagName('span');
+	var event=window.event||arguments.callee.caller.arguments[0];//消除浏览器差异
+    for(var i=0;i<cite.length;i++){
+  	  if(cite[i]==event.srcElement){
+		 cite[i].classList.add("cite")
+  	  }else{
+	     cite[i].classList.remove("cite")  
+  	  }
+    }
+    if(functionName==projectName){
+    	reloadFunc();
+    }
+}
+
+	var form=layui.form;  
+	var table=layui.table;
+ 	//监听表单操作
+	  form.on('switch(isStopFilter)', function(obj){
+		 var id = obj.value;
+		 var checked=obj.elem.checked;
+		 var state=0;
+		 if(!checked){
+		    state=1
+		 }
+		
+        $.post(
+        "#(path)/portal/core/sysFunc/isStop?isJson=true"
+        ,param({
+			'id' : id
+			,'state':state
+		}),function(feedback) {
+			if (feedback.success) {
+				layer.tips("修改成功", obj.othis);
+			} else {
+				$(".layui-laypage-btn").click();
+				layer.alert(feedback.msg);
+			}
+		});
+	  });
+	  	  
+	   //监听单元格编辑
+	  table.on('edit(maingrid)', function(obj){
+	    var value = obj.value //得到修改后的值
+	    ,data = obj.data //得到所在行所有键值
+	    ,field = obj.field; //得到字段	    
+	    var params="sysFunction."+field+"="+value;
+	    
+	    $.post("#(path)/portal/core/sysFunc/updateFieldValue?"+params
+	    ,param({
+	      'sysFunction.id' : data.id
+	    })
+	    ,function(feedback){
+			$(".layui-laypage-btn").click();	      
+			layer.msg(feedback.msg);			
+	    });
+	  });
+	  
+	  //是否展开菜单
+	  form.on('switch(isSpreadFilter)', function(obj){
+		 var id = obj.value;
+		 var checked=obj.elem.checked;
+		 var state=1;
+		 if(checked){
+		    state=0
+		 }
+		
+        $.post(
+        "#(path)/portal/core/sysFunc/updateFieldValue"
+        ,param({
+			'sysFunction.id' : id
+			,'sysFunction.spread':state
+		}),function(feedback) {
+			if (feedback.success) {
+				layer.tips("修改成功", obj.othis);
+			} else {
+				$(".layui-laypage-btn").click();
+				layer.alert(feedback.msg);
+			}
+		});
+	  });
+	  
+	  //是否在window中打开菜单
+	  form.on('switch(isWindowOpenFilter)', function(obj){
+		 var id = obj.value;
+		 var checked=obj.elem.checked;
+		 var state=0;
+		 if(checked){
+		    state=1
+		 }
+		
+        $.post(
+        "#(path)/portal/core/sysFunc/updateFieldValue"
+        ,param({
+			'sysFunction.id' : id
+			,'sysFunction.is_window_open':state
+		}),function(feedback) {
+			if (feedback.success) {
+				layer.tips("修改成功", obj.othis);
+			} else {
+				$(".layui-laypage-btn").click();
+				layer.alert(feedback.msg);
+			}
+		});
+	  });
+ </script>
+ #end
+ 

@@ -1,0 +1,148 @@
+			#(token)
+			<input class='layui-input' id='id_id' type="hidden" name='sysOrg.id' value='#(sysOrg.id??)' >
+			<input class='layui-input' id='id_parentId' type="hidden" name='sysOrg.parentid' value='#(sysOrg.parentid??parentid)' >
+			<div class="layui-row layui-col-space1 task-row">
+				#set(req=true)
+				#@colStart('部门名称',6)		
+						<input class='layui-input' id='orgName_id'  type="text" name='sysOrg.orgName' 
+						 value='#(sysOrg.org_name??)' lay-verType='tips'
+						 lay-verify="required|" required maxlength="30"  placeHolder="必填" />
+				#@colEnd()
+				#@colStart('上级部门',6)					
+					   	<input class='layui-input layui-disabled' id='chief_id'  type="text" name='sysOrg.parentidName' 
+						 value='#(sysOrg.parentid_name??parentIdName)' lay-verType='tips' readonly="readonly"/>
+				#@colEnd()
+				
+			</div>
+
+			<div class="layui-row layui-col-space1 task-row">				
+				#@colStart('负责人姓名',6)		
+						<input class='layui-input' id='chief_id'  type="text" name='sysOrg.chief' 
+						 value='#(sysOrg.chief??)' lay-verType='tips'
+						 lay-verify="" maxlength="30"  placeHolder="" />
+				#@colEnd()
+				#@colStart('负责人电话',6)		
+						<input class='layui-input' id='phone_id'  type="text" name='sysOrg.phone' 
+						 value='#(sysOrg.phone??)' lay-verType='tips'
+						 lay-verify="" maxlength="20"  placeHolder="" />
+				#@colEnd()
+			</div>
+			
+			<div class="layui-row layui-col-space1 task-row">	
+				#@colStart('负责人手机',6)		
+						<input class='layui-input' id='mobile_id'  type="text" name='sysOrg.mobile' 
+						 value='#(sysOrg.mobile??)' lay-verType='tips'
+						 lay-verify="" maxlength="20"  placeHolder="" />
+				#@colEnd()
+				#@colStart('负责人邮箱',6)
+						<input class='layui-input' id='email_id'  type="text" name='sysOrg.email' 
+						 value='#(sysOrg.email??)' lay-verType='tips'
+						 lay-verify="" maxlength="40"  placeHolder="" />
+				#@colEnd()
+			</div>
+
+			<div class="layui-row layui-col-space1 task-row">
+				#@colStart("描述",6)		
+					 	<input class='layui-input  show-text' id='descript_id'  name='sysOrg.descript' value="#(sysOrg.descript??)">
+				#@colEnd()
+				#@colStart("是否停用",6)	
+					<input  class='layui-input' type="radio" name="sysOrg.isstop" value="0" title="是"
+				       #if(sysOrg.isstop??==0)checked="checked"#end />
+			       <input  class='layui-input' type="radio" name="sysOrg.isstop" value="1" title="否"
+			       #if(sysOrg==null||sysOrg.isstop??==1)checked="checked"#end />    
+				#@colEnd()		
+			</div>
+		
+		<!-- 从表数据 -->
+		#@subTable(['用户管理'])
+			
+		<div class="layui-row layui-col-space1 task-row">
+				<div class="layui-hide-xs layui-col-sm12 layui-col-md4">
+					<div class="layui-input-block"></div>	
+				</div>
+				<div class="layui-col-xs12 layui-col-sm12 layui-col-md8">
+					<div class="layui-input-block">
+							<div class="layui-btn-container" style="margin-top: 10px">
+								<button id='submitBtn' type="submit" lay-submit	 class='layui-btn  layui-btn-normal '  value="Submit">
+									<i class="layui-icon">&#xe605;</i>	提交
+								</button>
+								<button id='closeWinBtn' type="button" onclick="parent.closeIndex()"	 class='layui-btn  layui-btn-normal' value="Close">
+									<i class="layui-icon">&#x1006;</i>	关闭
+								</button>
+							</div>
+					</div>
+				</div>
+			</div>
+	  #@submitFunction()
+  		
+
+#define js()
+#@subTableJs()
+<!-- 分页表格 -->
+<script>
+var params_sex=[{value:0,name:"女"},{value:1,name:"男"}];
+var params_yesno=[{value:0,name:"是"},{value:1,name:"否"}];
+var params = [{value:1,name:"张三1"},{value:2,name:"张三2"},{value:3,name:"张三3"},{value:4,name:"张三4"},{value:5,name:"张三5"}];
+
+renderSubTable1('#(sysOrg.id??)');
+
+/*=====表格1=====*/
+function renderSubTable1(orgId){
+	//获取默认配置
+	var config=editTable.config;
+	//查询数据接口
+	config.queryUrl="#(path)/portal/core/sysUser/list";
+	config.params={"type":"org","orgId":orgId};
+	//保存数据接口
+	config.saveUrl="#(path)/portal/core/sysOrg/saveTableTata?orgId="+orgId;
+	//删除接口
+	config.deleteUrl="#(path)/portal/core/sysUser/delete";
+	//添加行数据参数，可以给默认值
+	config.rowData={
+			"user_code":"test",
+			"user_name":"托尔斯泰",
+			"org_name":null,
+			"sex":"1",
+			"mobile":null,
+			"tel":null,
+			"email":null,
+			"allow_login":0
+	};
+	
+	//表格列表设置
+	editTable.render(config,{
+		  elem: '#'+config.tableId
+	      ,height: 'full-350'
+	      ,toolbar:'#'+config.toolbar
+	      ,cols: [[ 
+	      		 {field : 'id',type:'checkbox'}
+	             ,{title:'序号',type:'numbers',width:35}
+	             ,{field:'user_code',title: '用户名',edit:true}
+	             ,{field:'user_name',align:'center', title: '姓名',width:120,edit:true}               
+	             ,{field:'sex', title: '性别',event:'sex'
+	                 ,config:{type:'select',data:params_sex},templet:function(d){
+	                 	if(d.sex&&d.sex.name){
+	                          return  d.sex.name; 
+	                     }
+	                     return d.sex == 0 ? '女' : '男';
+	                 }
+	             }
+	             ,{field:'mobile', title: '手机 ',edit:true}
+	             ,{field:'tel', title: '电话',edit:true}
+	             ,{field:'email', title: '邮箱',edit:true}
+	             ,{field:'allow_login', title: '允许登录',event:'allow_login'
+	                 ,config:{type:'select',data:params_yesno},templet:function (d) {
+	                    if(d.allow_login&&d.allow_login.name){
+	                        return  d.allow_login.name;
+	                    }
+	                     return d.allow_login == 0 ? '是' : '否';
+	             	  }
+	            }
+			,{fixed: 'right', title:'操作', toolbar: '#'+config.rowbar,width:100 }
+		]]
+	});
+	
+}
+</script>
+#end
+

@@ -1,0 +1,290 @@
+#@layoutT("部门管理")
+#define main()
+<style type="text/css"> 
+
+/** 树图标样式 */
+body .layui-tree-skin-skin .layui-tree-branch{
+	color: #00C5CD;
+}
+/** 隐藏树图标 */
+.layui-tree-branch/*, .layui-tree-leaf ,.layui-xtree-icon-null  */{
+    display: none;
+}  
+#maingrid {
+	border: none;
+}
+
+.l-accordion-header{
+	display:none;
+}
+.cite{
+   color:#5FB878;
+}
+.layui-row{
+   background: #ffffff;
+}
+
+#searchForm{
+	margin-top: 5px;
+}
+
+</style>
+
+  <div id='container' class="layui-row" >	
+	<div class="layui-col-xs12 layui-col-sm3 div-scroll" position="left" id="accordion1"> 
+	     <div class="l-layout-header" onclick="reloadOrg()">部门菜单
+	        <div class="layui-btn-group">
+				#if(vs.funcMap.get('sys_org_add'))
+				<button id='addBtn_1' class="layui-btn layui-btn-normal layui-btn-sm">
+				  <i class="layui-icon">&#xe608;</i> 新增
+				</button>
+				#end
+				#if(vs.funcMap.get('sys_org_update'))
+				<button id='updateBtn_' class="layui-btn layui-btn-normal layui-btn-sm">
+				  <i class="layui-icon">&#xe642;</i> 修改
+				</button>		
+				#end
+				#if(vs.funcMap.get('sys_org_delete'))
+				<button id='deleteBtn_1' class="layui-btn  layui-btn-normal layui-btn-sm">
+				  <i class="layui-icon">&#xe640;</i> 删除
+				</button>			
+				#end		
+			</div>
+	     </div>
+         <div title="部门列表" class="l-scroll"style="left: 0px;  top: 0px;">
+             <ul id="leftLayout" style="margin-top:0px;margin-bottom:10px;">
+             </ul>
+         </div>
+     </div>
+        
+	<div class="layui-col-xs12 layui-col-sm9" position='center' id="orgDetail" >
+		<div id="orgInfor"></div>
+		<div id="orgUser" style="display: none">
+			#@formStart()
+				#@queryStart('用户名')
+				   <input type="search" name="userCode" autocomplete="off" class="layui-input" placeholder="用户名"/>
+				#@queryEnd()
+				#@queryStart('姓名')
+			   		<input type="search" name="userName" autocomplete="off" class="layui-input" placeholder="姓名"/>
+				#@queryEnd()
+				#@queryStart('性别')
+					<select name="sex" class="layui-input" lay-search>
+						<option value="">---请选择性别---</option>
+						<option value="1">男</option>
+						<option value="0">女</option>
+					</select>
+				#@queryEnd()
+			#@formEnd()
+		    <div class="layui-row  f-index-toolbar">
+				<div class="layui-col-xs12">
+	   				<table id="maingrid" lay-filter="maingrid"></table>
+	   			</div>
+	    	</div>
+		</div>
+    </div>
+	
+  </div>
+</div>
+
+
+#end
+
+#define js()
+<script type="text/javascript">
+
+var leftOtions,orgName,orgCode="sys",index;
+
+function setHeight(){
+	var contentHeight=$(window).height()-10;
+	var width =$('#container').width();
+	var col3=$('#accordion1').width();
+	if(col3<=280){
+		// $("#orgDetail").css("width",width-col3-2);	
+	}
+	$("#accordion1").css("height",contentHeight);
+	$("#orgDetail").css("height",contentHeight);
+}
+$(function(){
+	queryOrgTree();
+	setHeight();
+	$(window).resize(function(){
+		setHeight();
+	});
+	//关闭弹窗的回调函数
+	var option={
+		end : function() {
+			reloadOrg();
+			getOrgInfor();
+		}
+	}
+	
+	$("#addBtn_1").click(function(){
+		//var url='#(path)/portal/core/sysOrg/add?orgCode='+orgCode;
+		var url='#(path)/portal/core/sysOrg/addOrgUser?orgCode='+orgCode;
+		openDialog("添加部门",url,false,null,null,option);
+	});
+	
+	$("#updateBtn_").click(function(){
+		if(orgName==undefined||orgName=="组织机构"){
+			layer.msg("请选择部门");
+			return
+		}
+		var url='#(path)/portal/core/sysOrg/edit?orgCode='+orgCode;
+		openDialog("修改部门",url,false,null,null,option);		
+	});
+	
+	$("#deleteBtn_1").click(function(){	
+		if(orgName==undefined||orgName=="组织机构"){
+			layer.msg("请选择部门");
+			return
+		}
+		layer.confirm('确定要删除 '+orgName+' 吗？', function(index) {
+			$.ajax({
+				url:"#(path)/portal/core/sysOrg/delete?orgCode="+orgCode,
+				type:"POST",
+				success:function(data){
+					orgCode="sys";
+					orgName="组织机构";
+					reloadOrg();
+					getOrgInfor();	
+				}
+			});
+			layer.close(index);
+		});
+	});
+		
+})
+
+function closeIndex(){
+	layer.close(index);
+}
+function getOrgInfor(){
+	$.ajax({
+		url:"#(path)/portal/core/sysOrg/detail?orgCode="+orgCode,
+		type:"POST",
+		success:function(data){
+			$("#orgInfor").html(data);
+		}
+	});
+}
+
+//查询所有部门菜单并生成树
+function queryOrgTree(){
+	leftNodes="";
+	$.ajax({
+		url:"#(path)/portal/core/sysOrg/tree",  
+	    type:"POST", 
+	    data: {
+	    },
+	    success:function(data){
+	    	if(data.length>0){
+	    		var treeNode=data[0];
+	    		showLeftTree(treeNode,0);
+	    		leftTree();
+	    	}
+	    }	
+	});
+}
+
+//构造角色树节点
+var spred=true;//是否展开节点
+function showLeftTree(treeNode,num){
+  	var id=treeNode.id;
+	var text=treeNode.text;
+	if(num!=0){
+		leftNodes+=",";
+	}
+	//展开两层
+	if(num>=2){
+		spred=false;
+	}
+	
+		
+	leftNodes+="{title:'"+text+"',spread:"+spred+",id:'"+id+"',children:[";
+	var children=treeNode.children;
+	if(children.length>0){
+		for(var i=0;i<children.length;i++){
+			showLeftTree(children[i],i);
+		}
+	}
+	leftNodes+="]}";
+}
+
+    
+function strToJson(str){
+    var json = (new Function("return " + str ))();
+    return json;
+  }
+
+function reloadOrg(){
+	spred=true;
+	queryOrgTree();
+}
+
+//部门树
+function leftTree(){
+	layui.use('tree',function(){
+		var node=[strToJson(leftNodes.replace("undefined",""))];
+		leftOtions={
+				elem: '#leftLayout' //传入元素选择器
+				,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩		
+				,click: function(item){ //点击节点回调
+				      treeClick(item);				      			     
+				      getOrgInfor();	
+				 }
+				,data: node
+				
+		}	
+		$('ul li').remove();
+		layui.tree.render(leftOtions);
+	});
+}
+function treeClick(item){
+	orgName=item.data.title;
+    orgCode=item.data.id;
+	var cite=document.getElementsByTagName('span');
+	var event=window.event||arguments.callee.caller.arguments[0];//消除浏览器差异
+    for(var i=0;i<cite.length;i++){
+    	if(cite[i]==event.srcElement){
+    		cite[i].classList.add("cite")
+      	}else{
+    	    cite[i].classList.remove("cite")  
+      	}
+    } 
+    queryOrgUser();	
+}
+
+function queryOrgUser(){
+	$("#orgUser").show();
+	gridArgs.gridDivId ='maingrid';
+	gridArgs.heightDiff =225;
+	gridArgs.pageSize =10;
+	initGrid({id : 'maingrid'
+			,elem : '#maingrid'
+			,cellMinWidth: 80
+			,cols : [ [
+					{title: '主键',field : 'id',width : 35,checkbox : true},						
+					{title:'序号',type:'numbers',width:35},
+					{title: '用户名', field: 'user_code' },
+        			{title: '姓名', field: 'user_name'},
+	        		{title: '所属部门', field: 'org_name'},
+	        		{title: '性别', field: 'sex',templet:'#sexStr'},
+        			{title: '电话', field: 'tel'},
+        			{title: '手机号码', field: 'mobile'},
+        			{title: '邮箱', field: 'email'},
+        			{title: '允许登录', field: 'allow_login',templet:'#numToStr' }																	
+					//,{title: '操作',fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'} // 这里的toolbar值是模板元素的选择器
+			] ]
+			,url:"#(path)/portal/core/sysUser/list?type=org&orgId="+orgCode
+			,searchForm : 'searchForm'
+		});
+}
+</script>
+<script type="text/html" id="sexStr">
+    {{ d.sex == 1 ? '男' : '女' }}             
+</script>
+<script type="text/html" id="numToStr">
+    <input type="checkbox" name="isStop" disabled value="{{d.id}}" 
+		lay-skin="switch" lay-text="是|否" lay-filter="allowLoginFilter" {{ d.allow_login == 0 ? 'checked' : '' }}>               
+</script>
+#end

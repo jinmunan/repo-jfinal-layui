@@ -1,0 +1,49 @@
+#@layoutT('达人')
+#define main()
+<div class="container-wrap">
+   #@formStart()
+      #@queryStart('关键词查询')
+   <input type="search" name="keyword" autocomplete="off" class="layui-input" placeholder="搜索关键词" style="padding-left:20px"/>
+   <i class="layui-icon layui-icon-search" style="position: absolute;top:7px;left:2px"></i>
+      #@queryEnd()
+   #@formEnd()
+
+   #@table()
+</div>
+#end
+
+#define js()
+<!-- 分页表格 -->
+<script>
+    gridArgs.title='达人';
+    gridArgs.dataId='id';
+    gridArgs.deleteUrl='#(path)/portal/business/talent/delete';
+    gridArgs.updateUrl='#(path)/portal/business/talent/edit/';
+    gridArgs.addUrl='#(path)/portal/business/talent/add';
+    gridArgs.gridDivId ='maingrid';
+    initGrid({id : 'maingrid'
+        ,elem : '#maingrid'
+        ,toolbar:'#table_toolbar'//开启头部工具栏，并为其绑定左侧模板
+        ,cellMinWidth: 100
+        ,cols : [ [
+				 {title: '主键',field : 'id',width : 35,checkbox : true},
+				 {title:'序号',type:'numbers',width:35},
+				 {title:'达人名称',field:'name'},
+				 {title:'头像',field:'head_img'},
+				 {title:'背景图',field:'background_img'},
+				 {title:'简介',field:'introduce'},
+				 {title:'账号编码',field:'user_code'},
+				 {title:'创建时间',field:'create_time'},
+				 {title:'创建人',field:'create_by'},
+				 {title:'来源',field:'source'},
+
+            {fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'}
+            ] ]
+        ,url:"#(path)/portal/business/talent/list"
+        ,searchForm : 'searchForm'
+    });
+
+</script>
+#end
+
+

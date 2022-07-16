@@ -1,0 +1,59 @@
+#@layoutT('订单记录')
+#define main()
+<div class="container-wrap">
+   #@formStart()
+      #@queryStart('关键词查询')
+   <input type="search" name="keyword" autocomplete="off" class="layui-input" placeholder="搜索关键词" style="padding-left:20px"/>
+   <i class="layui-icon layui-icon-search" style="position: absolute;top:7px;left:2px"></i>
+      #@queryEnd()
+   #@formEnd()
+
+   #@table()
+</div>
+#end
+
+#define js()
+<!-- 分页表格 -->
+<script>
+    gridArgs.title='订单记录';
+    gridArgs.dataId='id';
+    gridArgs.deleteUrl='#(path)/portal/business/order/delete';
+    gridArgs.updateUrl='#(path)/portal/business/order/edit/';
+    gridArgs.addUrl='#(path)/portal/business/order/add';
+    gridArgs.gridDivId ='maingrid';
+    initGrid({id : 'maingrid'
+        ,elem : '#maingrid'
+        ,toolbar:'#table_toolbar'//开启头部工具栏，并为其绑定左侧模板
+        ,cellMinWidth: 100
+        ,cols : [ [
+				 {title: '主键',field : 'id',width : 35,checkbox : true},
+				 {title:'序号',type:'numbers',width:35},
+				 {title:'用户标识',field:'openid'},
+				 {title:'产品id',field:'productId'},
+				 {title:'手机',field:'phone'},
+				 {title:'价格',field:'price'},
+				 {title:'创建时间',field:'create_time'},
+				 {title:'用户姓名',field:'user_name'},
+				 {title:'用户留言',field:'user_remark'},
+				 {title:'完成时间',field:'update_time'},
+				 {title:'修改者',field:'update_by'},
+				 {title:'加急（0：否，1：是）',field:'urgent'},
+				 {title:'加急价格',field:'add_price'},
+				 {title:'是否完成（0：否，1：是）',field:'is_end'},
+				 {title:'来源（抖音、快手）',field:'source'},
+				 {title:'订单编号',field:'order_code'},
+				 {title:'交易号',field:'transaction_id'},
+				 {title:'支付方式（1、支付宝，2、微信）',field:'pay_method'},
+				 {title:'订单类型（1：签名设计，2、头像设计）',field:'order_type'},
+				 {title:'支付状态（0：未支付，1：已支付，2：退款中，3：已退款）',field:'pay_success'},
+
+            {fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'}
+            ] ]
+        ,url:"#(path)/portal/business/order/list"
+        ,searchForm : 'searchForm'
+    });
+
+</script>
+#end
+
+

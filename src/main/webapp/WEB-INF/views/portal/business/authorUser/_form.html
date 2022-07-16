@@ -1,0 +1,28 @@
+	<input type="hidden" class="layui-input"  name="authorUser.id" value="#(authorUser.id??)" />
+#(token)
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("用户标识",6)
+	<input type="text" class="layui-input"  name="authorUser.openid" value="#(authorUser.openid??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("昵称",6)
+	<input type="text" class="layui-input"  name="authorUser.nickname" value="#(authorUser.nickname??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("头像",6)
+	<input type="text" class="layui-input"  name="authorUser.avatarUrl" value="#(authorUser.avatar_url??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("手机号",6)
+	<input type="text" class="layui-input"  name="authorUser.phone" value="#(authorUser.phone??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("创建时间",6)
+	<input type="text" class="layui-input"  name="authorUser.createTime" value="#(authorUser.create_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("来源",6)
+	<input type="text" class="layui-input"  name="authorUser.source" value="#(authorUser.source??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+
+	#@submitButton()

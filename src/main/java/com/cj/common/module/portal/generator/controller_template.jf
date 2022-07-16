@@ -1,0 +1,94 @@
+package #(controllerPackage);
+
+import com.alibaba.fastjson.JSONArray;
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Path;
+import com.jfinal.plugin.activerecord.Record;
+
+import com.cj.common.base.BaseController;
+import #(importModel);
+import #(servicePackage).#(modelName)Service;
+
+/**
+ * controller层
+ * #(tableComment)
+ * @author #(author)
+ * @date #(date)
+ */
+@Path("#(actionKey)")
+public class #(modelName)Controller extends BaseController {
+
+   	@Inject
+   	#(modelName)Service service;
+
+    /**
+     * 视图页面
+     */
+  	public void index(){
+    	render("index.html");
+  	}
+
+    /**
+     * 列表表示
+     */
+   	public void list() {
+      	Record record=getAllParamsToRecord();
+      	renderJson(service.page(getParaToInt("pageNumber", 1), getParaToInt("pageSize", 100),record));
+	}
+
+    /**
+     * 增加页面
+     */
+   	public void add() {
+    	render("add.html");
+   	}
+
+    /**
+     * 保存
+     */
+   	public void save() {
+		#(modelName) entity=getBean(#(modelName).class);
+		entity.setId(createUUID()).save();
+		setAttr("#(lowercaseModelName)", entity);
+		render("add.html");
+   	}
+
+    /**
+     * 编辑页面
+     */
+  	public void edit() {
+      	setAttr("#(lowercaseModelName)", service.findById(getPara(0)));
+      	render("edit.html");
+   	}
+
+    /**
+     * 更新
+     */
+   	public void update() {
+      	#(modelName) entity=getBean(#(modelName).class);
+      	entity.update();
+      	setAttr("#(lowercaseModelName)", entity);
+      	render("edit.html");
+   	}
+
+    /**
+     * 删除
+     */
+   	public void delete() {
+      	service.deleteByIds(getIds());
+      	renderJson(suc());
+   	}
+
+    /**
+     * 列表表格
+     */
+	public void saveTableData() {
+		if("formTable".equals(getPara("type"))){
+			service.saveTableList(JSONArray.parseArray(getPara("tableList")), getPara("refId"));
+		}else{
+			//暂存从表数据
+			getSession().setAttribute(getPara("refId")+"#(lowercaseModelName)", getPara("tableList"));			
+		}
+		renderJson(ok());
+	}
+}

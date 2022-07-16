@@ -1,0 +1,169 @@
+#@layoutT("xm-select组件功能演示")
+#define main()
+
+    <form action="#" class="layui-form layui-form-pane f-form" method="post">
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 10px;">
+            <legend>基础使用</legend>
+        </fieldset>
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStart("一个小栗子",6)
+	        <div id="demo1"></div>
+	        #@colEnd()
+        </div>
+        <br/>
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText('用dom进行渲染',6)
+	        <div id="demo2"></div>
+	        #@colEnd()
+        </div>
+		<br/>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 10px;">
+            <legend>默认选中</legend>
+        </fieldset>
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText("使用selected属性",6)
+	        <div id="demo3"></div>
+	        #@colEnd()
+        </div>
+        <br/>
+        <div class="layui-row layui-col-space1 task-row">    
+            #@colStartText('使用initValue进行初始化,优先级大于选项中的selected',6)
+            <div id="demo4"></div>
+            #@colEnd()
+        </div>
+		<br/>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 10px;">
+            <legend>Tips修改提示</legend>
+        </fieldset>
+ 
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText("修改选项提示文字",6)
+	        <div id="demo5"></div>
+	        #@colEnd()
+        </div>
+        <br/>
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText('修改空数据提示文字',6)
+	        <div id="demo6"></div>
+	        #@colEnd()
+        </div>
+
+		<br/>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 10px;">
+            <legend>搜索模式</legend>
+        </fieldset>
+        
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText("默认搜索，按照数据name属性搜索",6)
+	        <div id="demo7"></div>
+	        #@colEnd()
+        </div>
+        <br/>
+        <div class="layui-row layui-col-space1 task-row">
+	        #@colStartText('重写搜索方法，可以实现模糊搜索',6)
+	        <div id="demo8"></div>
+	        #@colEnd()
+        </div>
+		<br/>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 10px;">
+            <legend>更多示例</legend>
+        </fieldset>
+        参考<a target="_blank" style="text-decoration: underline;" href="https://maplemei.gitee.io/xm-select/#/basic/use">xm-select官方文档</a>
+        <br/>
+	</form>
+
+#end
+
+#define js()
+<script>
+    ### demo1
+    let demo1 = xmSelect.render({
+        el: '#demo1',
+        data: [
+            {name: '张三', value: 1},
+            {name: '李四', value: 2},
+            {name: '王五', value: 3},
+        ]
+    });
+    ### demo2
+    let demo2 = xmSelect.render({
+        el: document.querySelector('#demo2'),
+        data: [
+            {name: '张三', value: 1},
+            {name: '李四', value: 2},
+            {name: '王五', value: 3},
+        ]
+    })
+    ### demmo3
+    let demo3 = xmSelect.render({
+        el: '#demo3',
+        data: [
+            {name: '水果', value: 1, selected: true, disabled: true},
+            {name: '蔬菜', value: 2, selected: true},
+            {name: '桌子', value: 3, disabled: true},
+            {name: '北京', value: 4},
+        ]
+    });
+    ### demo4
+    let demo4 = xmSelect.render({
+        el: '#demo4',
+        initValue: [4],
+        data: [
+            {name: '水果', value: 1, selected: true, disabled: true},
+            {name: '蔬菜', value: 2, selected: true},
+            {name: '桌子', value: 3, disabled: true},
+            {name: '北京', value: 4},
+        ]
+    })
+    ### demo5
+    let demo5 = xmSelect.render({
+        el: '#demo5',
+        tips: '你喜欢什么水果呢?',
+        data: [
+            {name: '西瓜', value: 1},
+            {name: '菠萝', value: 2},
+            {name: '苹果', value: 3},
+            {name: '梨子', value: 4},
+        ]
+    });
+    ### demo6
+    let demo6 = xmSelect.render({
+        el: '#demo6',
+        empty: '呀, 没有数据呢',
+        data: [ ]
+    });
+    ### demo7
+    let demo7 = xmSelect.render({
+        el: '#demo7',
+        filterable: true,
+        data: [
+            {name: '水果', value: 1},
+            {name: '蔬菜', value: 2},
+            {name: '桌子', value: 3},
+            {name: '北京', value: 4},
+        ]
+    });
+    ### demo8
+    let demo8 = xmSelect.render({
+        el: '#demo8',
+        filterable: true,
+        filterMethod: function(val, item, index, prop){
+            if(val == item.value){//把value相同的搜索出来
+                return true;
+            }
+            if(item.name.indexOf(val) != -1){//名称中包含的搜索出来
+                return true;
+            }
+            return false;//不知道的就不管了
+        },
+        data: [
+            {name: '水果', value: 1},
+            {name: '蔬菜', value: 2},
+            {name: '桌子', value: 3},
+            {name: '北京', value: 4},
+        ]
+    });
+</script>
+#end

@@ -1,0 +1,20 @@
+<input type="hidden" class="layui-input"  name="#(modelName).#(primaryKey)" value="#[[#]]#(#(modelName).#(primaryKey)??)" />
+#[[#(token)]]#
+#set(curIndex=0)
+#for(x:columnMetas)
+#if(x.name!=primaryKey)
+#if(curIndex%2==0)
+<div class="layui-row layui-col-space1 task-row">
+	#end
+	#set(curIndex++)
+	#[[ #@colStart("]]##(x.remarks)",6)
+	<input type="text" class="layui-input"  name="#(modelName).#(x.attrName)" value="#[[#]]#(#(modelName).#(x.name)??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	#[[ #@colEnd() ]]#
+	#if(curIndex%2==0)
+</div>
+#end
+#end
+#end
+#if(curIndex%2!=0)
+</div>
+#end

@@ -1,0 +1,260 @@
+#@layoutT("主从表格展示")
+#define css()
+<style type="text/css">
+#searchForm .layui-inline:nth-child(2){
+	border:1px solid #e6e6e6;
+} 
+#searchForm .layui-inline:nth-child(2) .layui-input-block{
+	min-height: 28px;
+}
+#searchForm .layui-inline:nth-child(2) label{
+	height:28px;
+	padding-top:6px;
+	background: none;
+	border:none;
+}
+#searchForm .layui-inline:nth-child(2) .layui-form-radio{
+	margin-top:0;
+}
+</style>
+#end
+#define main()
+<div class="container-wrap">
+	#@formStart()
+		#@queryStart('部门名称:')
+		   <input type="search" name="orgName" autocomplete="off" class="layui-input" placeholder="部门名称"/>
+		#@queryEnd()
+		
+		#set(showLabel=true)
+		#@queryStart('显示下级部门')
+		   <!-- <input type="checkbox" name="showSubOrg" checked="" lay-skin="switch" lay-text="是|否"> -->
+		   <input type="radio" name="showSubOrg" value="1" title="是">
+      	   <input type="radio" name="showSubOrg" value="0" title="否" checked>
+		#@queryEnd()
+	#@formEnd()
+	
+	<!-- 主表数据 -->
+	<div class="layui-row  f-index-toolbar">
+			<div class="layui-col-xs12">
+   				<table id="maingrid" lay-filter="maingrid"></table>
+   			</div>
+   	</div>
+   	   	
+   	<!-- 表头工具栏 -->
+   	<script type="text/html" id="table_toolbar">
+  		<div class="layui-btn-group">
+			#if(vs.funcMap.get('sys_org_add'))
+				<button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add">
+				  <i class="layui-icon">&#xe608;</i> 新增
+				</button>
+			#end
+			#if(vs.funcMap.get('sys_org_update'))
+				<button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="update">
+				  <i class="layui-icon">&#xe642;</i> 编辑
+				</button>
+			#end
+			#if(vs.funcMap.get('sys_org_delete'))					
+				<button class="layui-btn  layui-btn-normal layui-btn-sm" lay-event="delete">
+				  <i class="layui-icon">&#xe640;</i> 删除
+				</button>		
+			#end	
+				<button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="refresh">
+				  <i class="layui-icon">&#xe669;</i> 刷新
+				</button>
+		</div>
+	</script>
+   	<!-- 	每行的操作按钮 -->
+	<script type="text/html" id="bar_maingrid">
+	#if(vs.funcMap.get('sys_org_update'))
+  		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	#end
+
+	#if(vs.funcMap.get('sys_org_delete'))
+  		<a class="layui-btn layui-btn-xs layui-btn-danger lay-event="del">删除</a>
+	#end
+	</script>
+	
+	<!-- 从表数据 -->
+	#@subTable(['用户管理','用户管理2'])
+</div>	
+#end
+
+#define js()
+#@subTableJs()
+<!-- 分页表格 -->
+<script>
+	/**主表js代码**/
+	gridArgs.title='部门';
+	gridArgs.dataId='id';
+	gridArgs.deleteUrl='#(path)/portal/core/sysOrg/delete';
+	gridArgs.updateUrl='#(path)/portal/core/sysOrg/edit/';
+	gridArgs.addUrl='#(path)/portal/core/sysOrg/addOrgUser';
+	gridArgs.resetUrl='#(path)/portal/core/sysOrg/resetPassword';
+	gridArgs.gridDivId ='maingrid';
+	gridArgs.heightDiff=440;//调整表格高度
+	initGrid({id : 'maingrid'
+			,elem : '#maingrid'
+			,cellMinWidth: 80
+			,toolbar:'#table_toolbar'			
+			,cols : [ [
+					{title: '主键',field : 'id',width : 35,checkbox : true},						
+					{title:'序号',type:'numbers',width:35},
+	        		{title: '部门名称', field: 'org_name'},
+        			{title: '上级部门', field: 'parentid_name'},
+        			{title: '负责人姓名', field: 'chief'},
+        			{title: '电话', field: 'phone'},
+        			{title: '手机号码', field: 'mobile'},
+        			{title: '邮箱', field: 'email'},
+        			{title: '是否停用', field: 'isstop',templet:'#numToStr' },																		
+					{title: '操作',fixed:'right',width : 160,align : 'left',toolbar : '#bar_maingrid'} // 这里的toolbar值是模板元素的选择器
+			] ]
+			,url:"#(path)/portal/core/sysOrg/list"
+			,searchForm : 'searchForm'
+		});
+
+	/** 从表表格js代码**/
+	var params_sex=[{value:0,name:"女"},{value:1,name:"男"}];
+	var params_yesno=[{value:0,name:"是"},{value:1,name:"否"}];
+	var params = [{value:1,name:"张三1"},{value:2,name:"张三2"},{value:3,name:"张三3"},{value:4,name:"张三4"},{value:5,name:"张三5"}];
+
+	/*=====表格1=====*/
+	function renderSubTable1(orgId){
+		//获取默认配置
+		var config=editTable.config;
+		//查询数据接口
+		config.queryUrl="#(path)/portal/core/sysUser/list";
+		config.params={"type":"org","orgId":orgId};
+		//保存数据接口
+		config.saveUrl="#(path)/portal/core/sysOrg/saveTableTata?type=formTable&orgId="+orgId;
+		//删除接口
+		config.deleteUrl="#(path)/portal/core/sysUser/delete";
+		//添加行数据参数，可以给默认值
+		config.rowData={
+				"user_code":"test",
+				"user_name":"托尔斯泰",
+				"org_name":null,
+				"sex":"1",
+				"mobile":null,
+				"tel":null,
+				"email":null,
+				"allow_login":0
+		};
+		
+		//表格列表设置
+		editTable.render(config,{
+			  elem: '#'+config.tableId
+		      ,height: '300'
+		      ,toolbar:'#'+config.toolbar
+		      ,cols: [[ 
+		      		 {field : 'id',type:'checkbox'}
+		             ,{title:'序号',type:'numbers',width:35}
+		             ,{field:'user_code',title: '用户名',edit:true}
+		             ,{field:'user_name',align:'center', title: '姓名',width:120,edit:true}               
+		             ,{field:'sex', title: '性别',event:'sex'
+		                 ,config:{type:'select',data:params_sex},templet:function(d){
+		                 	if(d.sex&&d.sex.name){
+		                          return  d.sex.name; 
+		                     }
+		                     return d.sex == 0 ? '女' : '男';
+		                 }
+		             }
+		             ,{field:'mobile', title: '手机 ',edit:true}
+		             ,{field:'tel', title: '电话',edit:true}
+		             ,{field:'email', title: '邮箱',edit:true}
+		             ,{field:'allow_login', title: '允许登录',event:'allow_login'
+		                 ,config:{type:'select',data:params_yesno},templet:function (d) {
+		                    if(d.allow_login&&d.allow_login.name){
+		                        return  d.allow_login.name;
+		                    }
+		                     return d.allow_login == 0 ? '是' : '否';
+		             	  }
+		            }
+				,{fixed: 'right', title:'操作', toolbar: '#'+config.rowbar,width:100 }
+			]]
+		});
+		
+	}
+
+	/**========表格2=========*/
+	function renderSubTable2(orgId){
+		var editTable=new EditTable();
+		var config=editTable.config;
+		//除了第一个用默认配置,其他表格都要配置自己的参数
+		config.tableId='tab_item_2';//表Id
+		config.addBtnId='add_btn_2';//添加按钮ID
+		config.delEvent='del_btn_2';//删除按钮Even值
+		config.delBtnId='del_btn_2';
+		config.toolbar='table_toolbar_2';//表头工具ID
+		config.rowbar='table_rowbar_2';//行按钮ID
+		config.saveBtnId="save_btn_2";//保存表格接口
+		config.queryUrl="#(path)/portal/core/sysUser/list";
+		config.params={"type":"org","orgId":orgId};
+		config.saveUrl="#(path)/portal/core/sysOrg/saveTableTata?orgId="+orgId;
+		config.deleteUrl="#(path)/portal/core/sysUser/delete";
+		config.rowData={
+				"user_code":"test2",
+				"user_name":"托尔斯泰2",
+				"org_name":null,
+				"sex":0,
+				"mobile":null,
+				"tel":null,
+				"email":null,
+				"allow_login":1
+		};
+		editTable.render(config,{
+			 elem: '#'+config.tableId
+		     ,height: '300'
+		     ,toolbar:'#'+config.toolbar
+		     ,cols: [[ 
+		     		{field:'id',type:'checkbox'}
+		             ,{title:'序号',type:'numbers',width:35}
+		             ,{field:'user_code',title: '用户名',edit:true}
+		             ,{field:'user_name',align:'center', title: '姓名',width:120,edit:true}      
+		             ,{field:'sex', title: '性别',event:'sex'
+		                 ,config:{type:'select',data:params_sex},templet:function(d){
+		                 	if(d.sex&&d.sex.name){
+		                          return  d.sex.name; 
+		                     }
+		                     return d.sex == 0 ? '女' : '男';
+		                 }
+		             } 	                
+		             ,{field:'mobile', title: '手机 ',edit:true}
+		             ,{field:'tel', title: '电话',edit:true}
+		             ,{field:'email', title: '邮箱',edit:true}
+		             ,{field:'allow_login', title: '允许登录',event:'allow_login'
+		                 ,config:{type:'select',data:params_yesno},templet:function (d) {
+		                    if(d.allow_login&&d.allow_login.name){
+		                        return  d.allow_login.name;
+		                    }
+		                     return d.allow_login == 0 ? '是' : '否';
+		             }}
+					,{fixed: 'right', title:'操作', toolbar: '#'+config.rowbar,width:100 }
+				]]
+		});
+	}	
+</script>
+
+<script type="text/html" id="numToStr">
+    <input type="checkbox" name="isstop" value="{{d.id}}" 
+		lay-skin="switch" lay-text="是|否" lay-filter="allowLoginFilter" {{ d.isstop == 0 ? 'checked' : '' }}>               
+</script>
+#end
+ 
+<!-- 监听主表点击事件 --> 
+#define layuiFunc()
+  //监听行单击事件（双击事件为：rowDouble）
+  table.on('row(maingrid)', function(obj){
+    var data = obj.data;
+    var orgId=data.id;
+    //渲染从表数据
+    renderSubTable1(orgId);
+    renderSubTable2(orgId);
+     //标注选中样式
+    obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+  });
+#end
+ 
+
+
+
+

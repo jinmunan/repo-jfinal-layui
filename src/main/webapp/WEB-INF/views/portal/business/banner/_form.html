@@ -1,0 +1,25 @@
+	<input type="hidden" class="layui-input"  name="banner.id" value="#(banner.id??)" />
+#(token)
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("标题",6)
+	<input type="text" class="layui-input"  name="banner.title" value="#(banner.title??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("产品id",6)
+	<input type="text" class="layui-input"  name="banner.productId" value="#(banner.product_id??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("排序",6)
+	<input type="text" class="layui-input"  name="banner.orderNo" value="#(banner.order_no??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("是否停用",6)
+	<input type="text" class="layui-input"  name="banner.isStop" value="#(banner.is_stop??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("创建时间",6)
+	<input type="text" class="layui-input"  name="banner.createTime" value="#(banner.create_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+
+	#@submitButton()

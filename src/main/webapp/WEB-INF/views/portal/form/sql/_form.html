@@ -1,0 +1,62 @@
+	<div class='layui-row f-index-toolbar'>
+			<div class='layui-col-xs12'>
+				<div class="layui-btn-group">
+					<button id='addBtn_' class="layui-btn layui-btn-normal layui-btn-sm" onclick="save()">
+					  <i class="layui-icon">&#xe605;</i> 保存
+					</button>	
+					<button id='reviewBtn_' class="layui-btn  layui-btn-normal layui-btn-sm" onclick="review()">
+					  <i class="layui-icon">&#xe663;</i> 预览
+					</button>
+					<button id='closeWinBtn' class="layui-btn  layui-btn-normal layui-btn-sm">
+					  <i class="layui-icon">&#x1006;</i> 关闭
+					</button>
+				</div>
+			</div>
+		</div>
+		
+	<form action="javascript:void(0)" class="layui-form layui-form-pane f-form" method="post" id="saveForm" lay-filter='saveForm'>
+		<div class="layui-row layui-col-space1 task-row">
+			#(token)
+		<input type="hidden" name="id" value="" class="layui-input" />
+			#@colStart("分类",3)
+				<input type="hidden"  name="tree_id" value="#(treeId)" class="layui-input" lay-verType='tips'lay-verify=""    maxlength="50"/>
+				<input type="text"  name="tree_name" value="#(treeName)" class="layui-input layui-disabled" lay-verType='tips'lay-verify="" disabled="disabled"    maxlength="50"/>
+			#@colEnd()
+			
+			#@colStart("名称",3)
+			<input type="text" name="name"  value="" class="layui-input"  lay-verType='tips' lay-verify="required" required maxlength="50" placeHolder="必填" />
+			#@colEnd()
+	
+			#@colStart("编号",3)
+				<input type="text" name="code" value="" class="layui-input" lay-verType='tips'lay-verify="required" required maxlength="50" placeHolder="必填"  />
+			#@colEnd()	
+	
+			#@colStart("sql说明",3)
+				<input type="text" name="descp" value="" class="layui-input" />
+			#@colEnd()
+		</div>
+		
+		<!-- 文本编辑器 -->
+		<div class="layui-row layui-col-space1 task-row"style="height: 100%">
+		<textarea id="ddlSql" title="" name="content" placeholder="输入sql..." class="form-control btn-lg" style="height: 250px; display: none;">
+
+
+</textarea>
+		</div>
+		<button id="submitBtn_" class="layui-hide"></button>
+	</form>
+
+#define js()
+<script type="text/javascript">
+   
+   function review(){	
+		var ddlSqlvalue=ddlSql.getValue();
+		openDialog("SQL预览","#(path)/portal/form/sql/review?sql="+ddlSqlvalue,false,null,null,null);
+  }
+  
+  function save(){
+	   	 $("#submitBtn_").click(); 
+  }
+  
+</script>
+#end

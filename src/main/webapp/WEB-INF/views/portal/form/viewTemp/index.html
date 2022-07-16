@@ -1,0 +1,54 @@
+#[[
+#@layoutT("列表首页")
+#define main()
+<div class="container-wrap">
+	#@formStart()
+		#@queryStart('名称')
+		   <input type="search" name="name" autocomplete="off" class="layui-input" placeholder="名称"/>
+		#@queryEnd()
+		#@queryStart('分类')
+		   <input type="search" name="type" autocomplete="off" class="layui-input" placeholder="标识键"/>
+		#@queryEnd()		
+	#@formEnd()
+	
+	#@table()
+</div>
+#end
+
+#define js()
+<!-- 分页表格 -->
+<script>
+	var object="sys_tree";
+	var addViewCode="view_add";
+	var updateViewCode="view_update";
+	gridArgs.title='系统树';
+	gridArgs.dataId='id';
+	gridArgs.deleteUrl='#(path)/portal/form/business/delete?object='+object+'&primaryKey='+gridArgs.dataId;
+	gridArgs.updateUrl='#(path)/portal/form/business/edit?object='+object+'&primaryKey='+gridArgs.dataId+'&viewCode='+updateViewCode+'&id=';
+	gridArgs.addUrl='#(path)/portal/form/business/add?viewCode='+addViewCode;
+	gridArgs.gridDivId ='maingrid';
+	initGrid({id : 'maingrid'
+			,elem : '#maingrid'
+			,toolbar:'#table_toolbar'//开启头部工具栏，并为其绑定左侧模板
+	        /*
+	        ,defaultToolbar:['filter', 'exports', 'print',{//自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+	            title:'提示',layEvent: 'LAYTABLE_TIPS',icon: 'layui-icon-tips'
+	        }]
+	        */
+			,cellMinWidth: 80
+			,cols : [ [
+					{title: '主键',field : 'id',width : 35,checkbox : true},						
+					{title:'序号',type:'numbers',width:35},
+					{title: '分类', field: 'type'},
+					{title: '名称', field: 'name' },
+					{title: '排序', field: 'order_no'},																
+					{title: '操作',fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'} // 这里的toolbar值是模板元素的选择器
+			] ]
+			,url:"#(path)/portal/form/business/list"
+			,where:{"object":object,"primaryKey":gridArgs.dataId}
+			,searchForm : 'searchForm'
+		});
+</script>
+
+#end
+]]#

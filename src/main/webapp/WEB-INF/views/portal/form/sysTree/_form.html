@@ -1,0 +1,36 @@
+
+<form action="javascript:void(0)" class="layui-form layui-form-pane f-form" method="post" lay-filter='saveForm'>
+	<input type="hidden" class="layui-input" name="id" value=""/>
+	<input type="hidden" class="layui-input" name="parent_id" value=""/>
+		#(token)
+	<div class="layui-row layui-col-space1 task-row">
+		#set(req=true)
+		#@colStart("所属分类",12)
+			<input type="text" name="type" value="" class="layui-input layui-disabled" lay-verType='tips'lay-verify="required|" required maxlength="50" placeHolder="必填" readonly="readonly" />
+		#@colEnd()
+	</div>
+	
+	<div class="layui-row layui-col-space1 task-row">
+		#set(req=true)
+		#@colStart("名称",12)
+			<input type="text" name="name"  value="" class="layui-input"  lay-verType='tips' lay-verify="required|" maxlength="50" placeHolder="必填" required />
+		#@colEnd()
+ 	</div>	
+	
+	<div class="layui-row layui-col-space1 task-row">
+		#@colStart("序号",12)
+			<input type="number" name="order_no" value="1" class="layui-input"/>
+		#@colEnd()
+	</div>
+
+	#@submitButton()
+	
+</form>
+	
+	  <style>
+		.f-index-toolbar {
+		    padding: 10px !important;
+		    border: 0;
+		}
+		
+   </style>

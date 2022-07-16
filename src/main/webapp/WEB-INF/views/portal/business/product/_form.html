@@ -1,0 +1,68 @@
+	<input type="hidden" class="layui-input"  name="product.id" value="#(product.id??)" />
+#(token)
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("达人id",6)
+	<input type="text" class="layui-input"  name="product.talentId" value="#(product.talentId??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("标题",6)
+	<input type="text" class="layui-input"  name="product.title" value="#(product.title??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("封面图",6)
+	<input type="text" class="layui-input"  name="product.coverImg" value="#(product.cover_img??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("价格",6)
+	<input type="text" class="layui-input"  name="product.price" value="#(product.price??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("类型（1、签名设计、2、头像设计）",6)
+	<input type="text" class="layui-input"  name="product.type" value="#(product.type??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("banner轮播图",6)
+	<input type="text" class="layui-input"  name="product.bannerImg" value="#(product.banner_img??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("产品详情图",6)
+	<input type="text" class="layui-input"  name="product.detailImg" value="#(product.detail_img??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("创建时间",6)
+	<input type="text" class="layui-input"  name="product.createTime" value="#(product.create_time??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("创建人",6)
+	<input type="text" class="layui-input"  name="product.createBy" value="#(product.create_by??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("排序",6)
+	<input type="text" class="layui-input"  name="product.orderNo" value="#(product.order_no??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("置顶",6)
+	<input type="text" class="layui-input"  name="product.top" value="#(product.top??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("开启加急（0：否，1：是）",6)
+	<input type="text" class="layui-input"  name="product.isUrgent" value="#(product.is_urgent??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("加急价格",6)
+	<input type="text" class="layui-input"  name="product.addPrice" value="#(product.add_price??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("来源",6)
+	<input type="text" class="layui-input"  name="product.source" value="#(product.source??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+<div class="layui-row layui-col-space1 task-row">
+	 #@colStart("点击数",6)
+	<input type="text" class="layui-input"  name="product.clickNum" value="#(product.click_num??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+	 #@colStart("订单数",6)
+	<input type="text" class="layui-input"  name="product.payNum" value="#(product.pay_num??)" lay-verType='tips'lay-verify="" maxlength="100"/>
+	 #@colEnd() 
+</div>
+
+	#@submitButton()

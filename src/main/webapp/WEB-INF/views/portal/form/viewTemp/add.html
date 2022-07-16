@@ -1,0 +1,100 @@
+#[[
+#@layoutT("添加页")
+#define main()
+	<form action="javascript:void(0)" class="layui-form layui-form-pane f-form" method="post" lay-filter='saveForm'>	
+		### object是数据表w_sys_tree,默认只能操作 "w_" 开头的表
+		<input type="hidden" class="layui-input" name="object" value="sys_tree"/>
+		### 表的主键
+		<input type="hidden" class="layui-input" name="primaryKey" value="id"/>
+		### 以下是表字段内容,创建主键
+		#set(objectId=createUUID())
+		<input type="hidden" class="layui-input" name="id" value="#(objectId)"/>
+
+		#(token)		
+		<div class="layui-row layui-col-space1 task-row">
+			#@colStart("所属分类",6)
+				<input type="text" name="type" value="form" class="layui-input layui-disabled" lay-verType='tips'lay-verify="required|" required maxlength="50" placeHolder="必填" readonly="readonly" />
+			#@colEnd()
+			
+			#set(req=true)
+			#@colStart("名称",6)
+				<input type="text" name="name"  value="" class="layui-input"  lay-verType='tips' lay-verify="required|" maxlength="50" placeHolder="必填" required />
+			#@colEnd()
+		</div>
+				
+		<div class="layui-row layui-col-space1 task-row">
+			#@colStart("多选",6)
+				<input name="name0" type="checkbox" value="0" class="layui-input" title="选项一" />
+				<input name="name0" type="checkbox" value="1" class="layui-input" title="选项二"  />
+			#@colEnd()
+					
+			#@colStart("单选",6)
+				<input name="name1" type="radio" value="0" class="layui-input" title="否"  />
+				<input name="name1" type="radio" value="1" class="layui-input" title="是"  />
+			#@colEnd()
+		</div>
+		
+		<div class="layui-row layui-col-space1 task-row">
+			#set(req=true)
+			#@colStart("部门",6)
+				#set(layVerify="required")
+				#@getOrgSelect('divId_orgId','name2')
+			#@colEnd()		
+			
+			#set(req=true)
+			#@colStart("用户",6)
+				#set(req=true)
+				#@getUser('divId_userId','name3',1)
+			#@colEnd()
+		</div>
+		
+		<div class="layui-row layui-col-space1 task-row">
+			#@colStart("下拉",6)
+				<select name="name4" class="layui-input">
+					<option value="">--请选择--</option>
+					<option value="0">否</option>
+					<option value="1">是</option>
+				</select>
+			#@colEnd()
+			
+	        #@colStart("下拉多选",6)
+	        	<div id="demo1"></div>
+	        #@colEnd()
+		</div>
+		
+		<div class="layui-row layui-col-space1 task-row">
+			#@colStart("附件",12)
+				<div id="test3"></div>
+			#@colEnd()				
+	 	</div>	
+	 	
+		#@submitButton()
+	</form>
+	
+#end
+#define js()
+<script type="text/javascript">
+	//附件上传objectId,divId
+	#@formUploadButton(objectId,'test3')
+	
+	### demo1
+    let demo1 = xmSelect.render({
+        el: '#demo1',
+        name: 'name5',
+    	layVerify: 'required',
+    	layVerType: 'msg',
+    	initValue:[2],
+        data: [
+            {name: '张三', value: 1},
+            {name: '李四', value: 2},
+            {name: '王五', value: 3},
+        ]
+    });
+</script>
+#end
+
+<!-- 保存数据 -->
+#define layuiFunc()	
+	var saveUrl="#(path)/portal/form/business/save";
+#end
+]]#

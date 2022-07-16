@@ -1,0 +1,47 @@
+#@layoutT('授权用户')
+#define main()
+<div class="container-wrap">
+   #@formStart()
+      #@queryStart('关键词查询')
+   <input type="search" name="keyword" autocomplete="off" class="layui-input" placeholder="搜索关键词" style="padding-left:20px"/>
+   <i class="layui-icon layui-icon-search" style="position: absolute;top:7px;left:2px"></i>
+      #@queryEnd()
+   #@formEnd()
+
+   #@table()
+</div>
+#end
+
+#define js()
+<!-- 分页表格 -->
+<script>
+    gridArgs.title='授权用户';
+    gridArgs.dataId='id';
+    gridArgs.deleteUrl='#(path)/portal/business/authorUser/delete';
+    gridArgs.updateUrl='#(path)/portal/business/authorUser/edit/';
+    gridArgs.addUrl='#(path)/portal/business/authorUser/add';
+    gridArgs.gridDivId ='maingrid';
+    initGrid({id : 'maingrid'
+        ,elem : '#maingrid'
+        ,toolbar:'#table_toolbar'//开启头部工具栏，并为其绑定左侧模板
+        ,cellMinWidth: 100
+        ,cols : [ [
+				 {title: '主键',field : 'id',width : 35,checkbox : true},
+				 {title:'序号',type:'numbers',width:35},
+				 {title:'用户标识',field:'openid'},
+				 {title:'昵称',field:'nickname'},
+				 {title:'头像',field:'avatar_url'},
+				 {title:'手机号',field:'phone'},
+				 {title:'创建时间',field:'create_time'},
+				 {title:'来源',field:'source'},
+
+            {fixed:'right',width : 180,align : 'left',toolbar : '#bar_maingrid'}
+            ] ]
+        ,url:"#(path)/portal/business/authorUser/list"
+        ,searchForm : 'searchForm'
+    });
+
+</script>
+#end
+
+

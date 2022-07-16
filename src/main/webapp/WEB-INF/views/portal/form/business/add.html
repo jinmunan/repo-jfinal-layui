@@ -1,0 +1,49 @@
+
+#@layoutT("添加页")
+#define main()
+	<form action="javascript:void(0)" class="layui-form layui-form-pane f-form" method="post" lay-filter='saveForm'>	
+		<input type="hidden" class="layui-input" name="object" value="sys_user"/>
+		<input type="hidden" class="layui-input" name="primaryKey" value="id"/>
+		<input type="hidden" class="layui-input" name="id" value=""/>
+
+			#(token)
+		<div class="layui-row layui-col-space1 task-row">
+		#@colStart("用户编号",12)
+			<input type="text" name="user_code" value="" class="layui-input" lay-verType='tips'lay-verify="required|" required maxlength="50" placeHolder="必填" />
+		#@colEnd()
+		</div>
+		
+		<div class="layui-row layui-col-space1 task-row">
+		#set(req=true)
+		#@colStart("用户姓名",12)
+			<input type="text" name="user_name"  value="" class="layui-input"  lay-verType='tips' lay-verify="required|" maxlength="50" placeHolder="必填" required />
+		#@colEnd()
+	 	</div>	
+		
+		<div class="layui-row layui-col-space1 task-row">
+		#@colStart("部门",12)
+			#@getOrgSelect('orgId','org_id')
+		#@colEnd()
+		</div>
+		<div class="layui-row layui-col-space1 task-row">
+		#@colStart("性别",12)
+			<input name="sex" type="radio" value="1" title="男"/>
+			<input name="sex" type="radio" value="0"  title="女" />
+		#@colEnd()
+		</div>
+		#@submitButton()
+	</form>
+	
+#end
+
+<!-- 截取url参数 -->
+#define js()
+<script type="text/javascript">
+    
+</script>
+#end
+
+<!-- 保存数据 -->
+#define layuiFunc()	
+	var saveUrl="#(path)/portal/form/business/save";
+#end
