@@ -5,8 +5,6 @@ import com.jfinal.core.Const;
 import com.jfinal.core.Controller;
 import com.jfinal.token.TokenManager;
 
-import java.util.Timer;
-
 
 /**
  * token缓存策略

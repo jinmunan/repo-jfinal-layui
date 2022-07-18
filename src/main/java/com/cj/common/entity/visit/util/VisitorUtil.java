@@ -4,7 +4,7 @@ import com.cj.common.entity.loginuser.ILoginUser;
 import com.cj.common.entity.visit.Visitor;
 import com.cj.common.model.SysUser;
 import com.cj.common.util.kit.IpKit;
-import com.cj.common.module.login.service.LoginService;
+import com.cj.module.core.login.service.LoginService;
 import com.jfinal.aop.Aop;
 import com.jfinal.core.Controller;
 

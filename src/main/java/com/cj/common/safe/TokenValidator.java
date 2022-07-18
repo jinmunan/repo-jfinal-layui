@@ -7,7 +7,7 @@ import com.jfinal.validate.Validator;
 
 /**
  * token验证
- *
+ * 业务
  * @author THINKPAD
  */
 public class TokenValidator extends Validator {

@@ -2,17 +2,14 @@ package com.cj.common.interceptor;
 
 import com.cj.common.entity.visit.Visitor;
 import com.cj.common.entity.visit.util.VisitorUtil;
-import com.jfinal.aop.Inject;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.PropKit;
 import com.jfinal.kit.Ret;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * 登陆session、权限认证拦截器

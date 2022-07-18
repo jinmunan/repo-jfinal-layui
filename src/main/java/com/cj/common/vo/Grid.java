@@ -1,19 +1,3 @@
-/**
- * Copyright 2019-2022 覃海林(qinhaisenlin@163.com).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */ 
-
 package com.cj.common.vo;
 
 import java.util.ArrayList;
@@ -22,159 +6,161 @@ import java.util.List;
 
 /**
  * 列表分页对象数据
- * @author qinhailin
  *
+ * @author THINKPAD
  */
-public class Grid extends Pager{
+public class Grid extends Pager {
 
-	@SuppressWarnings("unused")
-	private static final long serialVersionUID = 1L;
-	private int code=0;
-	private String msg="获取成功";
+    @SuppressWarnings("unused")
+    private static final long serialVersionUID = 1L;
+    private int code = 0;
+    private String msg = "获取成功";
 
-	private Collection<?> list;
-	private String name;
-	private String id;
-	private String error;
-	private List<String> ids;
-	
-	public Grid(){
-		super();
-	}
-	public Grid(Collection<?> list){
-		this.list=list;
-		this.setTotalCount(getTotal()==0?list.size():getTotal());
-	}
-	public Grid(Collection<?> list, int totalCount){
-		this.list=list;
-		this.setTotalCount(totalCount);
-	}
-	
-	public Grid(Collection<?> list, int pageNumber, int pageSize){
-		this.list=list;
-		this.setPageNumber(pageNumber);
-		this.setPageSize(pageSize);
-	}
-	
-	public Grid(Collection<?> list, int pageNumber, int pageSize, int totalCount){
-		this.list=list;
-		this.setPageNumber(pageNumber);
-		this.setPageSize(pageSize);
-		this.setTotalCount(totalCount);
-	}
-	
-	public List<Integer> getIntIds() {
-		List<Integer> intIds = new ArrayList<Integer>();
-		if (getIds() != null) {
-			for (String s : getIds()) {
-				if (s != null && s.trim().length() > 0) {
-					intIds.add(Integer.valueOf(s));
-				}
-			}
-		}
-		return intIds;
-	}
+    private Collection<?> list;
+    private String name;
+    private String id;
+    private String error;
+    private List<String> ids;
 
-	public List<Long> getLongIds() {
-		List<Long> longIds = new ArrayList<Long>();
-		if (getIds() != null) {
-			for (String s : getIds()) {
-				if (s != null && s.trim().length() > 0) {
-					longIds.add(Long.valueOf(s));
-				}
-			}
-		}
-		return longIds;
-	}
+    public Grid() {
+        super();
+    }
 
-	public long getTotal() {
-		return this.getTotalCount();
-	}
-	
-	public int getCode() {
-		return code;
-	}
+    public Grid(Collection<?> list) {
+        this.list = list;
+        this.setTotalCount(getTotal() == 0 ? list.size() : getTotal());
+    }
 
-	public Grid setCode(int code) {
-		this.code = code;
-		return this;
-	}
+    public Grid(Collection<?> list, int totalCount) {
+        this.list = list;
+        this.setTotalCount(totalCount);
+    }
 
-	public String getMsg() {
-		return msg;
-	}
+    public Grid(Collection<?> list, int pageNumber, int pageSize) {
+        this.list = list;
+        this.setPageNumber(pageNumber);
+        this.setPageSize(pageSize);
+    }
 
-	public Grid setMsg(String msg) {
-		this.msg = msg;
-		return this;
-	}
+    public Grid(Collection<?> list, int pageNumber, int pageSize, int totalCount) {
+        this.list = list;
+        this.setPageNumber(pageNumber);
+        this.setPageSize(pageSize);
+        this.setTotalCount(totalCount);
+    }
+
+    public List<Integer> getIntIds() {
+        List<Integer> intIds = new ArrayList<Integer>();
+        if (getIds() != null) {
+            for (String s : getIds()) {
+                if (s != null && s.trim().length() > 0) {
+                    intIds.add(Integer.valueOf(s));
+                }
+            }
+        }
+        return intIds;
+    }
+
+    public List<Long> getLongIds() {
+        List<Long> longIds = new ArrayList<Long>();
+        if (getIds() != null) {
+            for (String s : getIds()) {
+                if (s != null && s.trim().length() > 0) {
+                    longIds.add(Long.valueOf(s));
+                }
+            }
+        }
+        return longIds;
+    }
+
+    public long getTotal() {
+        return this.getTotalCount();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public Grid setCode(int code) {
+        this.code = code;
+        return this;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public Grid setMsg(String msg) {
+        this.msg = msg;
+        return this;
+    }
 
 
-	public Collection<?> getList() {
-		return list;
-	}
+    public Collection<?> getList() {
+        return list;
+    }
 
-	@SuppressWarnings("rawtypes")
-	public Grid setList(Collection list) {
-		this.list = list;
-		return this;
-	}
+    @SuppressWarnings("rawtypes")
+    public Grid setList(Collection list) {
+        this.list = list;
+        return this;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Grid setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public Grid setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public Grid setId(String id) {
-		this.id = id;
-		return this;
-	}
+    public Grid setId(String id) {
+        this.id = id;
+        return this;
+    }
 
-	public String getError() {
-		return error;
-	}
+    public String getError() {
+        return error;
+    }
 
-	public Grid setError(String error) {
-		this.error = error;
-		return this;
-	}
+    public Grid setError(String error) {
+        this.error = error;
+        return this;
+    }
 
-	public List<String> getIds() {
-		return ids;
-	}
+    public List<String> getIds() {
+        return ids;
+    }
 
-	public Grid setIds(List<String> ids) {
-		this.ids = ids;
-		return this;
-	}
+    public Grid setIds(List<String> ids) {
+        this.ids = ids;
+        return this;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Grid [code=");
-		builder.append(code);
-		builder.append(", msg=");
-		builder.append(msg);
-		builder.append(", list=");
-		builder.append(list);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", id=");
-		builder.append(id);
-		builder.append(", error=");
-		builder.append(error);
-		builder.append(", ids=");
-		builder.append(ids);
-		builder.append("]");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Grid [code=");
+        builder.append(code);
+        builder.append(", msg=");
+        builder.append(msg);
+        builder.append(", list=");
+        builder.append(list);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", error=");
+        builder.append(error);
+        builder.append(", ids=");
+        builder.append(ids);
+        builder.append("]");
+        return builder.toString();
+    }
 
 }

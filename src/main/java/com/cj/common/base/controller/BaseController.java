@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cj.common.config.WebContant;
 import com.cj.common.entity.visit.Visitor;
 import com.cj.common.entity.visit.util.VisitorUtil;
-import com.cj.common.file.service.FileService;
+import com.cj.module.core.file.service.FileService;
 import com.cj.common.model.FileUploaded;
 import com.cj.common.safe.TokenService;
 import com.cj.common.util.kit.IdKit;

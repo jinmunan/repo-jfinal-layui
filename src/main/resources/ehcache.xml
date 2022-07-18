@@ -3,9 +3,10 @@
          xsi:noNamespaceSchemaLocation="ehcache.xsd"
          updateCheck="false" monitoring="autodetect"
          dynamicConfig="true">
-         
+
     <diskStore path="java.io.tmpdir"/>
 
+    <!--默认配置-->
     <defaultCache
                 maxEntriesLocalHeap="10000"
                 eternal="false"
@@ -19,8 +20,8 @@
                 statistics="false">
                 <persistence strategy="localTempSwap"/>
     </defaultCache>
-    
-    <!-- 用户权限--> 
+
+    <!-- 用户权限-->
     <cache name="userFunc"
            maxEntriesLocalHeap="10000"
            eternal="false"
@@ -28,8 +29,8 @@
            timeToLiveSeconds="1800"
            overflowToDisk="false"
             />
-            
-    <!-- 业务字典--> 
+
+    <!-- 业务字典-->
     <cache name="dictionary"
            maxEntriesLocalHeap="10000"
            eternal="false"
@@ -37,8 +38,8 @@
            timeToLiveSeconds="1800"
            overflowToDisk="false"
             />
-            
-    <!-- 功能管理--> 
+
+    <!-- 功能管理-->
     <cache name="funcManager"
            maxEntriesLocalHeap="10000"
            eternal="false"
@@ -46,8 +47,8 @@
            timeToLiveSeconds="1800"
            overflowToDisk="false"
             />
-            
-    <!-- 部门管理--> 
+
+    <!-- 部门管理-->
     <cache name="orgManager"
            maxEntriesLocalHeap="10000"
            eternal="false"
@@ -55,8 +56,8 @@
            timeToLiveSeconds="1800"
            overflowToDisk="false"
             />
-            
-    <!-- 表单自定义查询sql--> 
+
+    <!-- 表单自定义查询sql-->
     <cache name="cusSql"
            maxEntriesLocalHeap="10000"
            eternal="false"
@@ -64,7 +65,7 @@
            timeToLiveSeconds="1800"
            overflowToDisk="false"
             />
-            
+
     <!-- 缓存登录用户信息，空闲 30 分钟则清除，否则一直保持登录状态，
         登录过期时间是指 session表中的 expireAt，提升性能(不必总读取数据库 session 表) -->
     <cache name="loginAccount"
