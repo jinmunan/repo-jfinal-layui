@@ -114,9 +114,16 @@ public class SysFuncService extends BaseService {
 
     /**
      * 获取用户功能树
-     *
+     * 第一次调用:admin sys  nodes列表
+     * 第二次调用:admin sys_manger
+     * 第三次调用:admin sys_func_manager
+     * 第四次调用:admin sys_func_add
+     * 结束 第四个nodes是null
+     * 第一次回调:admin return nodes列表  称为第三次调用的孩子  nodes{node1:{aa,bb,cc:[null]},node2...}
+     * 第二回调 nodes{node1:{aa,bb,cc:{nodes{node1:{aa,bb,cc:[null]},node2...}}},node2...}
+     * 第三次回调 nodes{node1:{aa,bb,cc:{nodes{node1:{aa,bb,cc:{nodes{node1:{aa,bb,cc:[null]},node2...}}},node2...}}},node2...}
      * @param userCode   admin
-     * @param treeNodeId frame_main_view 主页
+     * @param treeNodeId frame_main_view 主页 sys
      * @return
      */
     public Collection<TreeNode> getUserFunctionTree(String userCode, String treeNodeId) {
@@ -141,6 +148,7 @@ public class SysFuncService extends BaseService {
             node.setChildren(children);
             nodes.add(node);
         }
+        // 没有了触发return条件
         return nodes;
     }
 
@@ -200,7 +208,7 @@ public class SysFuncService extends BaseService {
             // 加载
             @Override
             public Object load() {
-                // 获得用户功能树
+                // 获得用户功能树 递归
                 return getUserFunctionTree(userCode, funcId);
             }
         });

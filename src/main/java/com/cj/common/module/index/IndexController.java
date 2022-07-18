@@ -56,6 +56,7 @@ public class IndexController extends BaseController {
 
         // 渲染主页 系统功能服务
         // baseController中的方法 admin 和 null
+        // record包含了funList和topMenuList
         Record record = sysFuncService.getMenuInfo(getVisitor().getCode(), getPara("menuId"));
         // 设置到request域中
         setAttr("funcList", JsonKit.toJson(record.get("funcList")));

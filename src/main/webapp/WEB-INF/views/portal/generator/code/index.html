@@ -31,11 +31,8 @@ form .task-row:nth-child(4) button,form .task-row:nth-child(5) button{
 		#@colStart("数据库表",6)
 			<input type="text" class="layui-input" name="tableName"  readonly="readonly" placeholder="请选择数据库表"/>
 		#@colEnd()
-	<!-- 	#@colStart("备注信息",6)
-			<input type="text" class="layui-input" name="tableComment" />
-		#@colEnd() -->
 		#@colStart("作者名称",6)
-			<input type="text" class="layui-input" name="authorName" value="qinhailin"/>
+			<input type="text" class="layui-input" name="authorName" value="jinmunan"/>
 		#@colEnd()
 	</div>
 	<div class="layui-row layui-col-space1 task-row">
@@ -43,15 +40,16 @@ form .task-row:nth-child(4) button,form .task-row:nth-child(5) button{
 			<input type="text" class="layui-input" name="modelName" value="" readonly="readonly"/>
 		#@colEnd()
 		#@colStart("package",6)
-			<input type="text" class="layui-input" name="packageName" value="com.qinhailin.portal.business"/>
+		<!--业务代码包-->
+			<input type="text" class="layui-input" name="packageName" value="com.cj.common.module.portal.business"/>
 		#@colEnd()
 	</div>
-	
+
 	<div class="layui-row layui-col-space12 task-row" style="text-align: center">
 	 	<button class="layui-btn  layui-btn-normal" id="btnGenCode">生成代码 »</button>
 	 	<button class="layui-btn  layui-btn-normal" id="downloadAll" disabled="disabled">下载代码</button>
 	</div>
-	
+
 	<div class="layui-row layui-col-space task-row">
 	 	#@colStart("后端代码",12)
 	 		<div id="btnGroupJava">
@@ -62,7 +60,7 @@ form .task-row:nth-child(4) button,form .task-row:nth-child(5) button{
 		    </div>
 		#@colEnd()
 		</div>
-	
+
 	<div class="layui-row layui-col-space1 task-row">
 	 	#@colStart("前端代码",12)
 	 		<div id="btnGroupHtml">
@@ -90,8 +88,10 @@ function chilckBtn(dom) {
    $(dom).addClass("end");
 }
 var index=0;
+/*单击事件*/
 $('input[name=tableName]').click(function(){
 	index=openDialog('选择数据库表','#(path)/portal/generator/code/tables',false,'50%',null,null);
+	console.log(index);
 });
 
 function getTable(data){
@@ -122,7 +122,7 @@ function getTable(data){
             gutters:["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
         genCodeArea.setSize('auto','auto');
-	    
+
 		var codeData;
         /**
          * 生成代码
@@ -150,25 +150,25 @@ function getTable(data){
                         var codeJava=codeData["codejava"]||[];
                         var codeHtml=codeData["codehtml"]||[];
                         var btn1="",btn2="",checkbox1="",checkbox2="";
-                        
-                        codeJava.forEach(v=>{                            
+
+                        codeJava.forEach(v=>{
                         	btn1+='<button  class="btn layui-btn layui-btn-primary " onclick="chilckBtn(this);" id="'+v+'" >'+v+'</button>';
                         	checkbox1+='<input lay-filter="code" type="checkbox" name="javaCode" onclick="chilckBtn(this);" id="'+v+'" value="'+v+'" title="'+v+'" />';
                         });
-                        codeHtml.forEach(v=>{  
+                        codeHtml.forEach(v=>{
                         	btn2+='<button  class="btn layui-btn layui-btn-primary" onclick="chilckBtn(this);" id="'+v+'" >'+v+'</button>';
                         	checkbox2+='<input lay-filter="code" type="checkbox" name="htmlCode" onclick="chilckBtn(this);" id="'+v+'" value="'+v+'" title="'+v+'" />';
                         });
-                        
-                        if(btn1!=""){                       	
+
+                        if(btn1!=""){
                         	//btn1+='<button class="btn layui-btn layui-btn-primary" onclick="download(\'codeJava\')">下载</button>';
                         	checkbox1+='<button class="btn layui-btn layui-btn-primary" onclick="download(\'codeJava\')">下载</button>';
                         }
                         if(btn2!=""){
                         	//btn2+='<button class="btn layui-btn layui-btn-primary" onclick="download(\'codeHtml\')">下载</button>';
                         	checkbox2+='<button class="btn layui-btn layui-btn-primary" onclick="download(\'codeHtml\')">下载</button>';
-                        }          
-                                     
+                        }
+
                         $("#btnGroupJava").html(checkbox1);
                        	$("#btnGroupHtml").html(checkbox2);
                        	layui.form.render();
@@ -179,38 +179,38 @@ function getTable(data){
 		                       		strCode=codeData[data.value.toLocaleLowerCase()];
 			                    }
 	                            genCodeArea.setValue(strCode);
-	                            genCodeArea.setSize('auto', 'auto');                                                     
+	                            genCodeArea.setSize('auto', 'auto');
 	                        }
                        	});
-                       	         
+
                        	/* $('.btn').bind('click', function () {
                                if (!$.isEmptyObject(codeData)) {
                                    genCodeArea.setValue(codeData[this.id]);
-                                   genCodeArea.setSize('auto', 'auto');                                                     
+                                   genCodeArea.setSize('auto', 'auto');
                                }
                            }); */
-                                    
-                        $('#downloadAll').removeClass('layui-disabled');                        
+
+                        $('#downloadAll').removeClass('layui-disabled');
                         $('#downloadAll').attr("disabled",false);
-                        
+
                         var strCode=codeData[codeJava[0]];
                         if(strCode==null){
                       	  	strCode=codeData[codeJava[0].toLocaleLowerCase()];
                         }
                        	genCodeArea.setValue(strCode);
-                       	genCodeArea.setSize('auto', 'auto');                       
-                    } else {     
+                       	genCodeArea.setSize('auto', 'auto');
+                    } else {
                     	$("#btnGroupJava").html("");
-                       	$("#btnGroupHtml").html("");   
+                       	$("#btnGroupHtml").html("");
                        	genCodeArea.setValue("");
-                       	genCodeArea.setSize('auto', 'auto');                     
+                       	genCodeArea.setSize('auto', 'auto');
                         error(data.msg || '代码生成失败');
                     }
                 }
             });
         });
     });
-    
+
     $('#downloadAll').click(function(){
     	download("codeAll");
      });
@@ -231,16 +231,16 @@ function getTable(data){
         }else{
         	codeName = ["all"];
         }
-        
+
         if(type!='codeAll'&&codeName.length==0){
         	error("请选择要下载的文件")
         	return
         }
-        
+
         jsConfirm("若已存在文件将被覆盖,确定创建"+text+"文件吗？",function(){
         	$.ajax({
-				url:"#(path)/portal/generator/code/download",  
-			    type:"POST", 
+				url:"#(path)/portal/generator/code/download",
+			    type:"POST",
 			    data: {"type":type,"codeName":codeName.toString()},
 			    success:function(ret){
 			    	if(ret.state=='ok'){
@@ -248,10 +248,10 @@ function getTable(data){
 			    	}else{
 			    		error("代码文件创建失败")
 				    }
-			    }	
-			});  	
+			    }
+			});
          });
-    
+
    }
 </script>
 #end
